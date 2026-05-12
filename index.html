@@ -534,7 +534,7 @@ function renderTrip() {
   document.getElementById('tripTagline').textContent = tr.tagline || '';
   document.getElementById('tripDates').textContent = '\u{1F4C5} ' + (tr.dates || t('datesTBD'));
   document.getElementById('tripShip').textContent  = '\u{1F6F3} ' + (tr.ship  || t('shipTBD'));
-  document.getElementById('tripPort').textContent  = '&#x2693; '    + (tr.port  || t('portTBD'));
+  document.getElementById('tripPort').textContent  = '\u2693 ' + (tr.port  || t('portTBD'));
 }
 
 function openTripModal() {
