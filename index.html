@@ -37,6 +37,8 @@
     .hero-btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
     #editTripBtn { background: rgba(255,255,255,.25); border: 1px solid rgba(255,255,255,.5); color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; }
     #editTripBtn:hover { background: rgba(255,255,255,.4); }
+    #saveFileBtn { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.4); color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; transition: background .15s; }
+    #saveFileBtn:hover { background: rgba(255,255,255,.3); }
     #lockBtn { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.4); color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; transition: background .15s; }
     #lockBtn:hover { background: rgba(255,255,255,.3); }
     #lockBtn.unlocked { background: rgba(255,255,255,.3); border-color: rgba(255,255,255,.7); }
@@ -168,6 +170,7 @@
   <div class="hero-btns">
     <button id="lockBtn" onclick="toggleLock()">&#x1F512; Unlock</button>
     <button id="editTripBtn" onclick="openTripModal()">&#x270F;&#xFE0F; Edit Trip Info</button>
+    <button id="saveFileBtn" onclick="saveToFile()">&#x1F4BE; Save</button>
     <div class="lang-toggle">
       <button id="btnEN" class="active" onclick="setLang('en')">EN</button>
       <button id="btnTL" onclick="setLang('tl')">TL</button>
@@ -578,6 +581,18 @@ let state = {
 function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
 function load() { const raw = localStorage.getItem(KEY); if (raw) state = JSON.parse(raw); }
 function uid()  { return Math.random().toString(36).slice(2,9); }
+function saveToFile() {
+  const name = (state.trip.name || 'cruise-board').replace(/\s+/g, '-').toLowerCase();
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name + '.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  const btn = document.getElementById('saveFileBtn');
+  btn.innerHTML = '&#x2713; Saved!';
+  setTimeout(() => { btn.innerHTML = '&#x1F4BE; Save'; }, 2000);
+}
 
 // editing context: null = add mode, string id = edit mode
 let editingFlight = null, editingDay = null, editingEvent = null;
