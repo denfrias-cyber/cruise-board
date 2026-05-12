@@ -568,10 +568,6 @@ function renderFlights() {
   const badgeLabel = { confirmed: t('badgeConfirmed'), pending: t('badgePending'), cancelled: t('badgeCancelled') };
   el.innerHTML = state.flights.map(f => `
     <div class="flight-row ${f.status}">
-      <div class="item-actions">
-        <button class="edit-btn" onclick="openFlightModal('${f.id}')" title="Edit">&#x270F;</button>
-        <button class="del-btn" onclick="deleteFlight('${f.id}')">&#x2715;</button>
-      </div>
       <div>
         <div class="flight-route">${f.route}</div>
         <div class="flight-details">${f.date}</div>
@@ -580,7 +576,13 @@ function renderFlights() {
         ${f.notes ? `<div class="flight-details" style="margin-top:.2rem;color:#64748b">${f.notes}</div>` : ''}
         ${f.pax ? `<div class="flight-pax">&#x1F464; ${f.pax}</div>` : ''}
       </div>
-      <span class="flight-badge badge-${f.status}">${badgeLabel[f.status] || f.status}</span>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.4rem">
+        <span class="flight-badge badge-${f.status}">${badgeLabel[f.status] || f.status}</span>
+        <div style="display:flex;gap:.35rem;align-items:center">
+          <button class="edit-btn" onclick="openFlightModal('${f.id}')" title="Edit">&#x270F;</button>
+          <button class="del-btn" style="position:static" onclick="deleteFlight('${f.id}')">&#x2715;</button>
+        </div>
+      </div>
     </div>`).join('');
 }
 
