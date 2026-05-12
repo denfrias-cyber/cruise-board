@@ -579,7 +579,7 @@ function renderFlights() {
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:.4rem">
         <span class="flight-badge badge-${f.status}">${badgeLabel[f.status] || f.status}</span>
         <div style="display:flex;gap:.35rem;align-items:center">
-          <button class="edit-btn" onclick="openFlightModal('${f.id}')" title="Edit">&#x270F;</button>
+          <button class="edit-btn" onclick="openFlightModal('${f.id}')" title="Edit">&#x270F; Edit</button>
           <button class="del-btn" style="position:static" onclick="deleteFlight('${f.id}')">&#x2715;</button>
         </div>
       </div>
@@ -657,7 +657,7 @@ function renderItinerary() {
           <div class="event-item">
             <span class="event-time">${e.time}</span>
             <span class="event-desc">${e.desc}</span>
-            <button class="edit-btn" onclick="openEventModal('${d.id}','${e.id}')" title="Edit">&#x270F;</button>
+            <button class="edit-btn" onclick="openEventModal('${d.id}','${e.id}')" title="Edit">&#x270F; Edit</button>
             <span class="event-del" onclick="deleteEvent('${d.id}','${e.id}')">&#x2715;</span>
           </div>`).join('') : `<div class="empty" style="padding:.5rem">${t('emptyEvents')}</div>`}
       </div>
@@ -784,7 +784,7 @@ function renderNotes() {
   el.innerHTML = state.notes.slice().reverse().map(n => `
     <div class="note-item">
       <div class="item-actions">
-        <button class="edit-btn" onclick="openNoteModal('${n.id}')" title="Edit">&#x270F;</button>
+        <button class="edit-btn" onclick="openNoteModal('${n.id}')" title="Edit">&#x270F; Edit</button>
         <button class="del-btn" onclick="deleteNote('${n.id}')">&#x2715;</button>
       </div>
       <div style="display:flex;justify-content:space-between;margin-bottom:.3rem;padding-right:3.5rem">
@@ -849,7 +849,7 @@ function renderPack() {
     <div class="pack-item ${p.checked ? 'checked' : ''}">
       <input type="checkbox" id="pk_${p.id}" ${p.checked ? 'checked' : ''} onchange="togglePack('${p.id}',this.checked)" />
       <label for="pk_${p.id}">${p.text}</label>
-      <button class="edit-btn" onclick="openPackModal('${p.id}')" title="Edit">&#x270F;</button>
+      <button class="edit-btn" onclick="openPackModal('${p.id}')" title="Edit">&#x270F; Edit</button>
       <span class="event-del" onclick="deletePack('${p.id}')">&#x2715;</span>
     </div>`).join('');
 }
@@ -906,7 +906,7 @@ function renderContacts() {
   el.innerHTML = state.contacts.map(c => `
     <div class="contact-card">
       <div class="item-actions">
-        <button class="edit-btn" onclick="openContactModal('${c.id}')" title="Edit">&#x270F;</button>
+        <button class="edit-btn" onclick="openContactModal('${c.id}')" title="Edit">&#x270F; Edit</button>
         <button class="del-btn" onclick="deleteContact('${c.id}')">&#x2715;</button>
       </div>
       <div class="contact-name" style="padding-right:3rem">${c.name}</div>
@@ -966,7 +966,7 @@ function renderRooms() {
   el.innerHTML = state.rooms.map(r => `
     <div class="room-card">
       <div class="item-actions">
-        <button class="edit-btn" onclick="openRoomModal('${r.id}')" title="Edit">&#x270F;</button>
+        <button class="edit-btn" onclick="openRoomModal('${r.id}')" title="Edit">&#x270F; Edit</button>
         <button class="del-btn" onclick="deleteRoom('${r.id}')">&#x2715;</button>
       </div>
       <div class="room-number" style="padding-right:3rem">${r.num || '&#x2014;'}</div>
