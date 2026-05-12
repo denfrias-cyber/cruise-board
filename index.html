@@ -52,6 +52,10 @@
     .card-title .icon { font-size: 1.2rem; }
     .add-btn { background: var(--ocean); color: #fff; border: none; border-radius: 999px; padding: .3rem .85rem; font-size: .8rem; cursor: pointer; font-weight: 600; }
     .add-btn:hover { background: var(--deep); }
+    .sort-btns { display:flex; gap:.15rem; }
+    .sort-btn { background:none; border:1px solid var(--border); border-radius:.3rem; cursor:pointer; color:var(--gray); font-size:.65rem; padding:.18rem .32rem; line-height:1; }
+    .sort-btn:hover:not(:disabled) { background:var(--border); color:var(--deep); }
+    .sort-btn:disabled { opacity:.2; cursor:default; }
 
     /* &#x2500;&#x2500; FLIGHTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
     .flights-list { padding: .5rem .75rem .75rem; display: flex; flex-direction: column; gap: .6rem; }
@@ -167,10 +171,16 @@
 <div class="shell">
 
   <!-- FLIGHTS -->
-  <div class="card">
+  <div class="card" data-section="flights">
     <div class="card-header">
       <div class="card-title"><span class="icon">&#x2708;&#xFE0F;</span> <span data-i18n="flights">Flights</span></div>
-      <button class="add-btn" onclick="openFlightModal()" data-i18n="addFlight">+ Add Flight</button>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <div class="sort-btns">
+          <button class="sort-btn sort-btn-up" onclick="moveSection('flights','up')">&#x25B2;</button>
+          <button class="sort-btn sort-btn-down" onclick="moveSection('flights','down')">&#x25BC;</button>
+        </div>
+        <button class="add-btn" onclick="openFlightModal()" data-i18n="addFlight">+ Add Flight</button>
+      </div>
     </div>
     <div class="flights-list" id="flightsList">
       <div class="empty"><span class="big">&#x2708;&#xFE0F;</span><span data-i18n="emptyFlights">No flights added yet.</span></div>
@@ -178,10 +188,16 @@
   </div>
 
   <!-- ITINERARY -->
-  <div class="card">
+  <div class="card" data-section="itinerary">
     <div class="card-header">
       <div class="card-title"><span class="icon">&#x1F5D3;</span> <span data-i18n="itinerary">Day-by-Day Itinerary</span></div>
-      <button class="add-btn" onclick="openDayModal()" data-i18n="addDay">+ Add Day</button>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <div class="sort-btns">
+          <button class="sort-btn sort-btn-up" onclick="moveSection('itinerary','up')">&#x25B2;</button>
+          <button class="sort-btn sort-btn-down" onclick="moveSection('itinerary','down')">&#x25BC;</button>
+        </div>
+        <button class="add-btn" onclick="openDayModal()" data-i18n="addDay">+ Add Day</button>
+      </div>
     </div>
     <div class="itinerary-list" id="itineraryList">
       <div class="empty"><span class="big">&#x1F30A;</span><span data-i18n="emptyDays">No days added yet.</span></div>
@@ -189,10 +205,16 @@
   </div>
 
   <!-- ANNOUNCEMENTS -->
-  <div class="card">
+  <div class="card" data-section="announcements">
     <div class="card-header">
       <div class="card-title"><span class="icon">&#x1F4E3;</span> <span data-i18n="announcements">Announcements &amp; Notes</span></div>
-      <button class="add-btn" onclick="openNoteModal()" data-i18n="post">+ Post</button>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <div class="sort-btns">
+          <button class="sort-btn sort-btn-up" onclick="moveSection('announcements','up')">&#x25B2;</button>
+          <button class="sort-btn sort-btn-down" onclick="moveSection('announcements','down')">&#x25BC;</button>
+        </div>
+        <button class="add-btn" onclick="openNoteModal()" data-i18n="post">+ Post</button>
+      </div>
     </div>
     <div class="notes-list" id="notesList">
       <div class="empty"><span class="big">&#x1F4AC;</span><span data-i18n="emptyNotes">No posts yet.</span></div>
@@ -200,10 +222,16 @@
   </div>
 
   <!-- PACKING CHECKLIST -->
-  <div class="card">
+  <div class="card" data-section="packing">
     <div class="card-header">
       <div class="card-title"><span class="icon">&#x1F9F3;</span> <span data-i18n="packing">Shared Packing Checklist</span></div>
-      <button class="add-btn" onclick="openPackModal()" data-i18n="addItem">+ Add Item</button>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <div class="sort-btns">
+          <button class="sort-btn sort-btn-up" onclick="moveSection('packing','up')">&#x25B2;</button>
+          <button class="sort-btn sort-btn-down" onclick="moveSection('packing','down')">&#x25BC;</button>
+        </div>
+        <button class="add-btn" onclick="openPackModal()" data-i18n="addItem">+ Add Item</button>
+      </div>
     </div>
     <div class="pack-list" id="packList">
       <div class="empty"><span class="big">&#x1F392;</span><span data-i18n="emptyPack">Nothing added yet.</span></div>
@@ -211,10 +239,16 @@
   </div>
 
   <!-- CONTACTS -->
-  <div class="card">
+  <div class="card" data-section="contacts">
     <div class="card-header">
       <div class="card-title"><span class="icon">&#x1F4C7;</span> <span data-i18n="contacts">Group Contacts</span></div>
-      <button class="add-btn" onclick="openContactModal()" data-i18n="addContact">+ Add</button>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <div class="sort-btns">
+          <button class="sort-btn sort-btn-up" onclick="moveSection('contacts','up')">&#x25B2;</button>
+          <button class="sort-btn sort-btn-down" onclick="moveSection('contacts','down')">&#x25BC;</button>
+        </div>
+        <button class="add-btn" onclick="openContactModal()" data-i18n="addContact">+ Add</button>
+      </div>
     </div>
     <div class="contacts-grid" id="contactsGrid">
       <div class="empty" style="grid-column:1/-1"><span class="big">&#x1F465;</span><span data-i18n="emptyContacts">No contacts added.</span></div>
@@ -222,10 +256,16 @@
   </div>
 
   <!-- ROOM INFO -->
-  <div class="card">
+  <div class="card" data-section="rooms">
     <div class="card-header">
       <div class="card-title"><span class="icon">&#x1F6CF;</span> <span data-i18n="rooms">Room / Cabin Info</span></div>
-      <button class="add-btn" onclick="openRoomModal()" data-i18n="addRoom">+ Add Room</button>
+      <div style="display:flex;gap:.5rem;align-items:center">
+        <div class="sort-btns">
+          <button class="sort-btn sort-btn-up" onclick="moveSection('rooms','up')">&#x25B2;</button>
+          <button class="sort-btn sort-btn-down" onclick="moveSection('rooms','down')">&#x25BC;</button>
+        </div>
+        <button class="add-btn" onclick="openRoomModal()" data-i18n="addRoom">+ Add Room</button>
+      </div>
     </div>
     <div class="rooms-grid" id="roomsGrid">
       <div class="empty" style="grid-column:1/-1"><span class="big">&#x1F6AA;</span><span data-i18n="emptyRooms">No cabins added yet.</span></div>
@@ -506,6 +546,7 @@ const KEY = 'cruiseBoard_v1';
 let state = {
   trip: { name: 'Group Cruise 2025', tagline: 'Our Adventure Together', dates: '', ship: '', port: '' },
   flights: [], days: [], notes: [], pack: [], contacts: [], rooms: [],
+  sectionOrder: ['flights','itinerary','announcements','packing','contacts','rooms'],
 };
 
 function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
@@ -518,12 +559,47 @@ let editingNote = null, editingPack = null, editingContact = null, editingRoom =
 let activeDay = null;
 
 // &#x2500;&#x2500; INIT &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
-load(); applyLang(); renderAll();
+load(); applySectionOrder(); applyLang(); renderAll(); updateSortBtns();
 
 function renderAll() {
   renderTrip(); renderFlights(); renderItinerary();
   renderNotes(); renderPack(); renderContacts(); renderRooms();
 }
+
+function applySectionOrder() {
+  const shell = document.querySelector('.shell');
+  if (!shell) return;
+  const order = state.sectionOrder || ['flights','itinerary','announcements','packing','contacts','rooms'];
+  order.forEach(id => {
+    const card = shell.querySelector('[data-section="' + id + '"]');
+    if (card) shell.appendChild(card);
+  });
+}
+
+function moveSection(id, dir) {
+  const shell = document.querySelector('.shell');
+  const card  = shell.querySelector('[data-section="' + id + '"]');
+  if (!card) return;
+  if (dir === 'up' && card.previousElementSibling) {
+    shell.insertBefore(card, card.previousElementSibling);
+  } else if (dir === 'down' && card.nextElementSibling) {
+    card.nextElementSibling.insertAdjacentElement('afterend', card);
+  }
+  state.sectionOrder = Array.from(shell.querySelectorAll('[data-section]')).map(c => c.dataset.section);
+  save();
+  updateSortBtns();
+}
+
+function updateSortBtns() {
+  const cards = Array.from(document.querySelectorAll('.shell [data-section]'));
+  cards.forEach((card, i) => {
+    const up   = card.querySelector('.sort-btn-up');
+    const down = card.querySelector('.sort-btn-down');
+    if (up)   up.disabled   = (i === 0);
+    if (down) down.disabled = (i === cards.length - 1);
+  });
+}
+
 
 // &#x2500;&#x2500; TRIP &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
