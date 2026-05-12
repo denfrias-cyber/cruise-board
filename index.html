@@ -37,6 +37,12 @@
     .hero-btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
     #editTripBtn { background: rgba(255,255,255,.25); border: 1px solid rgba(255,255,255,.5); color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; }
     #editTripBtn:hover { background: rgba(255,255,255,.4); }
+    #lockBtn { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.4); color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; transition: background .15s; }
+    #lockBtn:hover { background: rgba(255,255,255,.3); }
+    #lockBtn.unlocked { background: rgba(255,255,255,.3); border-color: rgba(255,255,255,.7); }
+    .pin-error { color: #ef4444; font-size: .85rem; margin-top: -.25rem; display: none; }
+    .pin-divider { border: none; border-top: 1px solid var(--border); margin: .5rem 0; }
+    .pin-hint { font-size: .78rem; color: var(--gray); margin-top: -.25rem; }
     .lang-toggle { display: flex; background: rgba(0,0,0,.25); border-radius: 999px; overflow: hidden; border: 1px solid rgba(255,255,255,.3); }
     .lang-toggle button { background: none; border: none; color: rgba(255,255,255,.65); padding: .4rem .9rem; font-size: .82rem; font-weight: 700; cursor: pointer; transition: background .15s, color .15s; }
     .lang-toggle button.active { background: rgba(255,255,255,.9); color: var(--deep); border-radius: 999px; }
@@ -160,6 +166,7 @@
     <span id="tripPort">&#x2693; Port TBD</span>
   </div>
   <div class="hero-btns">
+    <button id="lockBtn" onclick="toggleLock()">&#x1F512; Unlock</button>
     <button id="editTripBtn" onclick="openTripModal()">&#x270F;&#xFE0F; Edit Trip Info</button>
     <div class="lang-toggle">
       <button id="btnEN" class="active" onclick="setLang('en')">EN</button>
@@ -294,9 +301,28 @@
     <input id="mTripShip" placeholder="e.g. Royal Caribbean Harmony" />
     <label data-i18n="lHomePort">Home Port</label>
     <input id="mTripPort" placeholder="e.g. Port of Miami" />
+    <hr class="pin-divider" />
+    <label>Edit PIN</label>
+    <input id="mTripPin" type="password" placeholder="Set a PIN to lock editing&#x2026;" maxlength="12" autocomplete="new-password" />
+    <p class="pin-hint" id="pinHint"></p>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('tripModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" onclick="saveTripInfo()" data-i18n="save">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- PIN MODAL -->
+<div class="modal-overlay" id="pinModal">
+  <div class="modal">
+    <h3>&#x1F512; Enter PIN to Edit</h3>
+    <input id="mPinInput" type="password" placeholder="Enter PIN" maxlength="12" autocomplete="off"
+           oninput="document.getElementById('pinError').style.display='none'"
+           onkeydown="if(event.key==='Enter')submitPin()" />
+    <p class="pin-error" id="pinError">Incorrect PIN. Try again.</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('pinModal')">Cancel</button>
+      <button class="btn-primary" onclick="submitPin()">&#x1F513; Unlock</button>
     </div>
   </div>
 </div>
@@ -544,7 +570,7 @@ function applyLang() {
 // &#x2500;&#x2500; STATE &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
 const KEY = 'cruiseBoard_v1';
 let state = {
-  trip: { name: 'Group Cruise 2025', tagline: 'Our Adventure Together', dates: '', ship: '', port: '' },
+  trip: { name: 'Group Cruise 2025', tagline: 'Our Adventure Together', dates: '', ship: '', port: '', pin: '' },
   flights: [], days: [], notes: [], pack: [], contacts: [], rooms: [],
   sectionOrder: ['flights','itinerary','announcements','packing','contacts','rooms'],
 };
@@ -557,9 +583,10 @@ function uid()  { return Math.random().toString(36).slice(2,9); }
 let editingFlight = null, editingDay = null, editingEvent = null;
 let editingNote = null, editingPack = null, editingContact = null, editingRoom = null;
 let activeDay = null;
+let sessionUnlocked = false;
 
 // &#x2500;&#x2500; INIT &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
-load(); applySectionOrder(); applyLang(); renderAll(); updateSortBtns();
+load(); applySectionOrder(); applyLang(); renderAll(); updateSortBtns(); updateLockState();
 
 function renderAll() {
   renderTrip(); renderFlights(); renderItinerary();
@@ -620,18 +647,66 @@ function openTripModal() {
   document.getElementById('mTripDates').value   = tr.dates   || '';
   document.getElementById('mTripShip').value    = tr.ship    || '';
   document.getElementById('mTripPort').value    = tr.port    || '';
+  document.getElementById('mTripPin').value     = tr.pin     || '';
+  document.getElementById('pinHint').textContent = tr.pin ? 'PIN is set. Edit to change, or clear to remove.' : 'No PIN set &#8212; board is open to all.';
   openModal('tripModal');
 }
 
 function saveTripInfo() {
+  const newPin = document.getElementById('mTripPin').value;
   state.trip = {
     name:    document.getElementById('mTripName').value.trim()    || 'Group Cruise 2025',
     tagline: document.getElementById('mTripTagline').value.trim(),
     dates:   document.getElementById('mTripDates').value.trim(),
     ship:    document.getElementById('mTripShip').value.trim(),
     port:    document.getElementById('mTripPort').value.trim(),
+    pin:     newPin,
   };
-  save(); renderTrip(); closeModal('tripModal');
+  if (!newPin) sessionUnlocked = true;
+  save(); renderTrip(); updateLockState(); closeModal('tripModal');
+}
+
+// &#9472;&#9472; PIN LOCK &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+function updateLockState() {
+  const hasPin = !!state.trip.pin;
+  if (!hasPin) sessionUnlocked = true;
+  const editable = !hasPin || sessionUnlocked;
+  const lockBtn = document.getElementById('lockBtn');
+  if (lockBtn) {
+    lockBtn.style.display = hasPin ? '' : 'none';
+    lockBtn.innerHTML = editable ? '\u{1F513} Lock' : '\u{1F512} Unlock';
+    lockBtn.classList.toggle('unlocked', editable);
+  }
+  const editTripBtn = document.getElementById('editTripBtn');
+  if (editTripBtn) editTripBtn.style.display = editable ? '' : 'none';
+  document.querySelectorAll('.add-btn, .edit-btn, .del-btn, .sort-btns').forEach(el => {
+    el.style.display = editable ? '' : 'none';
+  });
+}
+
+function toggleLock() {
+  if (!state.trip.pin) return;
+  if (sessionUnlocked) {
+    sessionUnlocked = false;
+    updateLockState();
+  } else {
+    document.getElementById('mPinInput').value = '';
+    document.getElementById('pinError').style.display = 'none';
+    openModal('pinModal');
+    setTimeout(() => document.getElementById('mPinInput').focus(), 80);
+  }
+}
+
+function submitPin() {
+  const entered = document.getElementById('mPinInput').value;
+  if (entered === state.trip.pin) {
+    sessionUnlocked = true;
+    updateLockState();
+    closeModal('pinModal');
+  } else {
+    document.getElementById('pinError').style.display = 'block';
+    document.getElementById('mPinInput').select();
+  }
 }
 
 // &#x2500;&#x2500; FLIGHTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
