@@ -306,23 +306,23 @@
   <div class="modal">
     <h3 id="flightModalTitle">&#x2708;&#xFE0F; Add Flight</h3>
     <label data-i18n="lWhoFlying">Who's Flying</label>
-    <input id="mFlightPax" placeholder="e.g. Dennis &amp; Maria" />
+    <input id="mFlightPax" placeholder="e.g. Dennis &amp; Maria" oninput="scheduleAutoSave()" />
     <label data-i18n="lRoute">Route</label>
-    <input id="mFlightRoute" placeholder="e.g. LAX &#x2192; MIA" />
+    <input id="mFlightRoute" placeholder="e.g. LAX &#x2192; MIA" oninput="scheduleAutoSave()" />
     <label data-i18n="lDateTime">Date &amp; Time</label>
-    <input id="mFlightDate" placeholder="e.g. Jul 11 &#xB7; Depart 8:00 AM &#x2192; Arrive 4:30 PM" />
+    <input id="mFlightDate" placeholder="e.g. Jul 11 &#xB7; Depart 8:00 AM &#x2192; Arrive 4:30 PM" oninput="scheduleAutoSave()" />
     <label data-i18n="lFlightNum">Flight # / Airline</label>
-    <input id="mFlightNum" placeholder="e.g. AA 2341 &#xB7; American Airlines" />
+    <input id="mFlightNum" placeholder="e.g. AA 2341 &#xB7; American Airlines" oninput="scheduleAutoSave()" />
     <label data-i18n="lConfNum">Confirmation #</label>
-    <input id="mFlightConf" placeholder="e.g. XJKL92" />
+    <input id="mFlightConf" placeholder="e.g. XJKL92" oninput="scheduleAutoSave()" />
     <label data-i18n="lStatus">Status</label>
-    <select id="mFlightStatus">
+    <select id="mFlightStatus" onchange="scheduleAutoSave()">
       <option value="confirmed">&#x2705; Confirmed</option>
       <option value="pending">&#x23F3; Pending</option>
       <option value="cancelled">&#x274C; Cancelled</option>
     </select>
     <label data-i18n="lNotes">Notes</label>
-    <input id="mFlightNotes" placeholder="e.g. Window seats, 2 checked bags" />
+    <input id="mFlightNotes" placeholder="e.g. Window seats, 2 checked bags" oninput="scheduleAutoSave()" />
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('flightModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" id="flightSaveBtn" onclick="saveFlight()">Add Flight</button>
@@ -335,9 +335,9 @@
   <div class="modal">
     <h3 id="dayModalTitle">&#x1F5D3; Add Itinerary Day</h3>
     <label data-i18n="lDayLabel">Day Label</label>
-    <input id="mDayLabel" placeholder="e.g. Day 1 &#xB7; Saturday Jul 12" />
+    <input id="mDayLabel" placeholder="e.g. Day 1 &#xB7; Saturday Jul 12" oninput="scheduleAutoSave()" />
     <label data-i18n="lPortLocation">Port / Location</label>
-    <input id="mDayPort" placeholder="e.g. Miami (Embarkation) or At Sea" />
+    <input id="mDayPort" placeholder="e.g. Miami (Embarkation) or At Sea" oninput="scheduleAutoSave()" />
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('dayModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" id="daySaveBtn" onclick="saveDay()">Add Day</button>
@@ -350,9 +350,9 @@
   <div class="modal">
     <h3 id="eventModalTitle">&#x23F0; Add Event</h3>
     <label data-i18n="lTime">Time</label>
-    <input id="mEventTime" placeholder="e.g. 9:00 AM or All Day" />
+    <input id="mEventTime" placeholder="e.g. 9:00 AM or All Day" oninput="scheduleAutoSave()" />
     <label data-i18n="lDescription">Description</label>
-    <input id="mEventDesc" placeholder="e.g. Cozumel port arrival &#x2014; snorkeling tour" />
+    <input id="mEventDesc" placeholder="e.g. Cozumel port arrival &#x2014; snorkeling tour" oninput="scheduleAutoSave()" />
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('eventModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" id="eventSaveBtn" onclick="saveEvent()">Add Event</button>
@@ -365,9 +365,9 @@
   <div class="modal">
     <h3 id="noteModalTitle">&#x1F4E3; Post Announcement</h3>
     <label data-i18n="lYourName">Your Name</label>
-    <input id="mNoteAuthor" placeholder="e.g. Dennis" />
+    <input id="mNoteAuthor" placeholder="e.g. Dennis" oninput="scheduleAutoSave()" />
     <label data-i18n="lMessage">Message</label>
-    <textarea id="mNoteText" rows="3" placeholder="e.g. Meet at Gate B4 at 7:30 AM!"></textarea>
+    <textarea id="mNoteText" rows="3" placeholder="e.g. Meet at Gate B4 at 7:30 AM!" oninput="scheduleAutoSave()"></textarea>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('noteModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" id="noteSaveBtn" onclick="saveNote()">Post</button>
@@ -380,7 +380,7 @@
   <div class="modal">
     <h3 id="packModalTitle">&#x1F9F3; Add Packing Item</h3>
     <label data-i18n="lItem">Item</label>
-    <input id="mPackItem" placeholder="e.g. Sunscreen SPF 50+" />
+    <input id="mPackItem" placeholder="e.g. Sunscreen SPF 50+" oninput="scheduleAutoSave()" />
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('packModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" id="packSaveBtn" onclick="savePackItem()">Add</button>
@@ -393,11 +393,11 @@
   <div class="modal">
     <h3 id="contactModalTitle">&#x1F4C7; Add Contact</h3>
     <label data-i18n="lName">Name</label>
-    <input id="mContactName" placeholder="e.g. Maria Garcia" />
+    <input id="mContactName" placeholder="e.g. Maria Garcia" oninput="scheduleAutoSave()" />
     <label data-i18n="lRoleRelation">Role / Relation</label>
-    <input id="mContactRole" placeholder="e.g. Travel Organizer, Roommate&#x2026;" />
+    <input id="mContactRole" placeholder="e.g. Travel Organizer, Roommate&#x2026;" oninput="scheduleAutoSave()" />
     <label data-i18n="lPhoneInfo">Phone / Info</label>
-    <input id="mContactInfo" placeholder="e.g. &#x1F4F1; (310) 555-0199" />
+    <input id="mContactInfo" placeholder="e.g. &#x1F4F1; (310) 555-0199" oninput="scheduleAutoSave()" />
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('contactModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" id="contactSaveBtn" onclick="saveContact()">Add</button>
@@ -410,15 +410,15 @@
   <div class="modal">
     <h3 id="roomModalTitle">&#x1F6CF; Add Cabin / Room</h3>
     <label data-i18n="lCabinNum">Cabin / Room Number</label>
-    <input id="mRoomNum" placeholder="e.g. 8542 or Suite 1204" />
+    <input id="mRoomNum" placeholder="e.g. 8542 or Suite 1204" oninput="scheduleAutoSave()" />
     <label data-i18n="lDeck">Deck</label>
-    <input id="mRoomDeck" placeholder="e.g. Deck 8 &#x2014; Midship" />
+    <input id="mRoomDeck" placeholder="e.g. Deck 8 &#x2014; Midship" oninput="scheduleAutoSave()" />
     <label data-i18n="lGuests">Guests Staying Here</label>
-    <input id="mRoomGuests" placeholder="e.g. Dennis &amp; Maria" />
+    <input id="mRoomGuests" placeholder="e.g. Dennis &amp; Maria" oninput="scheduleAutoSave()" />
     <label data-i18n="lRoomType">Room Type / Bed Config</label>
-    <input id="mRoomType" placeholder="e.g. Balcony &#xB7; King &#xB7; Sleeps 2" />
+    <input id="mRoomType" placeholder="e.g. Balcony &#xB7; King &#xB7; Sleeps 2" oninput="scheduleAutoSave()" />
     <label data-i18n="lNotes">Notes</label>
-    <input id="mRoomNotes" placeholder="e.g. Connecting to cabin 8544, safe code: 1234" />
+    <input id="mRoomNotes" placeholder="e.g. Connecting to cabin 8544, safe code: 1234" oninput="scheduleAutoSave()" />
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('roomModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" id="roomSaveBtn" onclick="saveRoom()">Add Cabin</button>
@@ -687,7 +687,7 @@ function openFlightModal(id) {
   openModal('flightModal');
 }
 
-function saveFlight() {
+function saveFlight(keepOpen) {
   const data = {
     pax:       document.getElementById('mFlightPax').value.trim(),
     route:     document.getElementById('mFlightRoute').value.trim() || 'Flight',
@@ -700,11 +700,12 @@ function saveFlight() {
   if (editingFlight) {
     const i = state.flights.findIndex(x => x.id === editingFlight);
     if (i > -1) state.flights[i] = { ...state.flights[i], ...data };
-    editingFlight = null;
+    if (!keepOpen) editingFlight = null;
   } else {
     state.flights.push({ id: uid(), ...data });
   }
-  save(); renderFlights(); closeModal('flightModal');
+  save(); renderFlights();
+  if (!keepOpen) closeModal('flightModal');
 }
 
 function deleteFlight(id) {
@@ -774,17 +775,18 @@ function openDayModal(id) {
   openModal('dayModal');
 }
 
-function saveDay() {
+function saveDay(keepOpen) {
   const label = document.getElementById('mDayLabel').value.trim() || 'Day';
   const port  = document.getElementById('mDayPort').value.trim();
   if (editingDay) {
     const i = state.days.findIndex(x => x.id === editingDay);
     if (i > -1) { state.days[i].label = label; state.days[i].port = port; }
-    editingDay = null;
+    if (!keepOpen) editingDay = null;
   } else {
     state.days.push({ id: uid(), label, port, events: [] });
   }
-  save(); renderItinerary(); closeModal('dayModal');
+  save(); renderItinerary();
+  if (!keepOpen) closeModal('dayModal');
 }
 
 function deleteDay(id) {
@@ -815,7 +817,7 @@ function openEventModal(dayId, eventId) {
   openModal('eventModal');
 }
 
-function saveEvent() {
+function saveEvent(keepOpen) {
   const day = state.days.find(d => d.id === activeDay);
   if (!day) return;
   const time = document.getElementById('mEventTime').value.trim() || '&#x2013;';
@@ -823,11 +825,12 @@ function saveEvent() {
   if (editingEvent) {
     const i = day.events.findIndex(e => e.id === editingEvent);
     if (i > -1) { day.events[i].time = time; day.events[i].desc = desc; }
-    editingEvent = null;
+    if (!keepOpen) editingEvent = null;
   } else {
     day.events.push({ id: uid(), time, desc });
   }
-  save(); renderItinerary(); closeModal('eventModal');
+  save(); renderItinerary();
+  if (!keepOpen) closeModal('eventModal');
   setTimeout(() => {
     const hdr = document.getElementById('dh_' + activeDay);
     if (hdr && !document.getElementById('de_' + activeDay).classList.contains('open')) {
@@ -891,13 +894,13 @@ function openNoteModal(id) {
   openModal('noteModal');
 }
 
-function saveNote() {
+function saveNote(keepOpen) {
   const author = document.getElementById('mNoteAuthor').value.trim();
   const text   = document.getElementById('mNoteText').value.trim() || '&#x2026;';
   if (editingNote) {
     const i = state.notes.findIndex(x => x.id === editingNote);
     if (i > -1) { state.notes[i].author = author; state.notes[i].text = text; }
-    editingNote = null;
+    if (!keepOpen) editingNote = null;
   } else {
     const now = new Date();
     state.notes.push({
@@ -906,7 +909,8 @@ function saveNote() {
           now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}),
     });
   }
-  save(); renderNotes(); closeModal('noteModal');
+  save(); renderNotes();
+  if (!keepOpen) closeModal('noteModal');
 }
 
 function deleteNote(id) {
@@ -948,17 +952,18 @@ function openPackModal(id) {
   openModal('packModal');
 }
 
-function savePackItem() {
+function savePackItem(keepOpen) {
   const text = document.getElementById('mPackItem').value.trim();
   if (!text) return;
   if (editingPack) {
     const i = state.pack.findIndex(x => x.id === editingPack);
     if (i > -1) state.pack[i].text = text;
-    editingPack = null;
+    if (!keepOpen) editingPack = null;
   } else {
     state.pack.push({ id: uid(), text, checked: false });
   }
-  save(); renderPack(); closeModal('packModal');
+  save(); renderPack();
+  if (!keepOpen) closeModal('packModal');
 }
 
 function togglePack(id, val) {
@@ -1011,7 +1016,7 @@ function openContactModal(id) {
   openModal('contactModal');
 }
 
-function saveContact() {
+function saveContact(keepOpen) {
   const data = {
     name: document.getElementById('mContactName').value.trim() || 'Contact',
     role: document.getElementById('mContactRole').value.trim(),
@@ -1020,11 +1025,12 @@ function saveContact() {
   if (editingContact) {
     const i = state.contacts.findIndex(x => x.id === editingContact);
     if (i > -1) state.contacts[i] = { ...state.contacts[i], ...data };
-    editingContact = null;
+    if (!keepOpen) editingContact = null;
   } else {
     state.contacts.push({ id: uid(), ...data });
   }
-  save(); renderContacts(); closeModal('contactModal');
+  save(); renderContacts();
+  if (!keepOpen) closeModal('contactModal');
 }
 
 function deleteContact(id) {
@@ -1075,7 +1081,7 @@ function openRoomModal(id) {
   openModal('roomModal');
 }
 
-function saveRoom() {
+function saveRoom(keepOpen) {
   const data = {
     num:    document.getElementById('mRoomNum').value.trim(),
     deck:   document.getElementById('mRoomDeck').value.trim(),
@@ -1086,11 +1092,12 @@ function saveRoom() {
   if (editingRoom) {
     const i = state.rooms.findIndex(x => x.id === editingRoom);
     if (i > -1) state.rooms[i] = { ...state.rooms[i], ...data };
-    editingRoom = null;
+    if (!keepOpen) editingRoom = null;
   } else {
     state.rooms.push({ id: uid(), ...data });
   }
-  save(); renderRooms(); closeModal('roomModal');
+  save(); renderRooms();
+  if (!keepOpen) closeModal('roomModal');
 }
 
 function deleteRoom(id) {
@@ -1100,6 +1107,26 @@ function deleteRoom(id) {
 
 // &#x2500;&#x2500; MODAL UTILS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
 function openModal(id)  { document.getElementById(id).classList.add('active'); }
+
+// &#9472;&#9472; AUTO-SAVE &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+let _autoSaveTimer;
+const _autoSaveFnMap = {
+  flightModal:  () => { if (editingFlight)  saveFlight(true); },
+  dayModal:     () => { if (editingDay)     saveDay(true); },
+  eventModal:   () => { if (editingEvent)   saveEvent(true); },
+  noteModal:    () => { if (editingNote)    saveNote(true); },
+  packModal:    () => { if (editingPack)    savePackItem(true); },
+  contactModal: () => { if (editingContact) saveContact(true); },
+  roomModal:    () => { if (editingRoom)    saveRoom(true); },
+};
+function scheduleAutoSave() {
+  clearTimeout(_autoSaveTimer);
+  _autoSaveTimer = setTimeout(() => {
+    const open = document.querySelector('.modal-overlay.active');
+    if (open && _autoSaveFnMap[open.id]) _autoSaveFnMap[open.id]();
+  }, 600);
+}
+
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
 document.querySelectorAll('.modal-overlay').forEach(ov => {
