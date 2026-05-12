@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>&#x1F6A2; Cruise Group Board</title>
+  <style>
+    :root {
+      --ocean: #0077b6;
+      --deep: #023e8a;
+      --sky: #90e0ef;
+      --sand: #fef9ef;
+      --coral: #f77f50;
+      --white: #ffffff;
+      --gray: #6b7280;
+      --light: #f0f9ff;
+      --border: #bae6fd;
+      --text: #1e293b;
+      --success: #16a34a;
+      --warn: #d97706;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(160deg, #023e8a 0%, #0077b6 40%, #48cae4 100%);
+      min-height: 100vh;
+      color: var(--text);
+    }
+
+    /* &#x2500;&#x2500; HERO &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
+    .hero { text-align: center; padding: 2.5rem 1rem 2rem; color: var(--white); }
+    .hero .wave { font-size: 3rem; display: block; margin-bottom: .5rem; }
+    .hero h1 { font-size: 1.9rem; font-weight: 800; letter-spacing: -.5px; }
+    .hero .subtitle { font-size: 1rem; opacity: .85; margin-top: .4rem; }
+    .hero-meta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+    .hero-meta span { background: rgba(255,255,255,.2); border-radius: 999px; padding: .3rem .9rem; font-size: .85rem; backdrop-filter: blur(4px); }
+    .hero-btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+    #editTripBtn { background: rgba(255,255,255,.25); border: 1px solid rgba(255,255,255,.5); color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; }
+    #editTripBtn:hover { background: rgba(255,255,255,.4); }
+    .lang-toggle { display: flex; background: rgba(0,0,0,.25); border-radius: 999px; overflow: hidden; border: 1px solid rgba(255,255,255,.3); }
+    .lang-toggle button { background: none; border: none; color: rgba(255,255,255,.65); padding: .4rem .9rem; font-size: .82rem; font-weight: 700; cursor: pointer; transition: background .15s, color .15s; }
+    .lang-toggle button.active { background: rgba(255,255,255,.9); color: var(--deep); border-radius: 999px; }
+    .lang-toggle button:hover:not(.active) { color: #fff; }
+
+    /* &#x2500;&#x2500; SHELL &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
+    .shell { max-width: 780px; margin: 0 auto; padding: 0 .75rem 3rem; display: flex; flex-direction: column; gap: 1rem; }
+
+    /* &#x2500;&#x2500; CARD &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
+    .card { background: var(--white); border-radius: 1.25rem; box-shadow: 0 4px 24px rgba(0,0,0,.12); overflow: hidden; }
+    .card-header { display: flex; align-items: center; justify-content: space-between; padding: .9rem 1.1rem .75rem; border-bottom: 1px solid var(--border); background: var(--light); }
+    .card-title { font-size: 1rem; font-weight: 700; color: var(--deep); display: flex; align-items: center; gap: .45rem; }
+    .card-title .icon { font-size: 1.2rem; }
+    .add-btn { background: var(--ocean); color: #fff; border: none; border-radius: 999px; padding: .3rem .85rem; font-size: .8rem; cursor: pointer; font-weight: 600; }
+    .add-btn:hover { background: var(--deep); }
+
+    /* &#x2500;&#x2500; FLIGHTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
+    .flights-list { padding: .5rem .75rem .75rem; display: flex; flex-direction: column; gap: .6rem; }
+    .flight-row { background: var(--light); border: 1px solid var(--border); border-radius: .9rem; padding: .75rem 1rem; display: grid; grid-template-columns: 1fr auto; gap: .3rem .5rem; align-items: start; position: relative; }
+    .flight-row.confirmed { border-left: 4px solid var(--success); }
+    .flight-row.pending   { border-left: 4px solid var(--warn); }
+    .flight-route { font-weight: 700; font-size: 1rem; color: var(--deep); }
+    .flight-details { font-size: .8rem; color: var(--gray); }
+    .flight-pax { font-size: .8rem; font-style: italic; color: var(--ocean); }
+    .flight-badge { font-size: .7rem; font-weight: 700; border-radius: 999px; padding: .2rem .6rem; text-transform: uppercase; letter-spacing: .5px; }
+    .badge-confirmed { background: #dcfce7; color: #15803d; }
+    .badge-pending   { background: #fef9c3; color: #854d0e; }
+    .badge-cancelled { background: #fee2e2; color: #991b1b; }
+    .del-btn { background: none; border: none; cursor: pointer; color: #d1d5db; font-size: 1rem; padding: .1rem .3rem; position: absolute; top: .5rem; right: .5rem; }
+    .del-btn:hover { color: #ef4444; }
+    /* edit button + action pair */
+    .edit-btn { background: none; border: none; cursor: pointer; color: #93c5fd; font-size: .9rem; padding: .1rem .25rem; line-height: 1; }
+    .edit-btn:hover { color: var(--ocean); }
+    .item-actions { position: absolute; top: .45rem; right: .45rem; display: flex; gap: .05rem; align-items: center; }
+    .item-actions .del-btn { position: static; }
+
+    /* &#x2500;&#x2500; ITINERARY &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
+    .itinerary-list { padding: .5rem .75rem .75rem; display: flex; flex-direction: column; gap: .5rem; }
+    .day-row { border-radius: .9rem; border: 1px solid var(--border); overflow: hidden; }
+    .day-header { background: linear-gradient(90deg, var(--ocean), #48cae4); color: #fff; padding: .55rem 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; }
+    .day-header .day-label { font-weight: 700; font-size: .9rem; }
+    .day-header .day-port  { font-size: .8rem; opacity: .9; }
+    .day-header .chevron { transition: transform .2s; }
+    .day-header.open .chevron { transform: rotate(180deg); }
+    .day-events { display: none; padding: .5rem .75rem .65rem; background: var(--white); flex-direction: column; gap: .4rem; }
+    .day-events.open { display: flex; }
+    .event-item { display: flex; gap: .7rem; align-items: flex-start; font-size: .85rem; padding: .35rem .1rem; border-bottom: 1px dashed #e0f2fe; }
+    .event-item:last-child { border-bottom: none; }
+    .event-time { color: var(--ocean); font-weight: 700; min-width: 55px; font-size: .8rem; }
+    .event-desc { flex: 1; color: var(--text); }
+    .event-del { color: #d1d5db; cursor: pointer; font-size: .9rem; }
+    .event-del:hover { color: #ef4444; }
+    .day-actions { display: flex; gap: .5rem; padding: .4rem .75rem .6rem; background: #f8fafc; flex-wrap: wrap; }
+    .day-add-btn { font-size: .78rem; color: var(--ocean); background: none; border: 1px dashed var(--ocean); border-radius: 999px; padding: .2rem .75rem; cursor: pointer; }
+    .day-add-btn:hover { background: var(--light); }
+
+    /* &#x2500;&#x2500; ANNOUNCEMENTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
+    .notes-list { padding: .5rem .75rem .75rem; display: flex; flex-direction: column; gap: .5rem; }
+    .note-item { background: #fffbeb; border: 1px solid #fde68a; border-radius: .75rem; padding: .65rem .9rem; font-size: .87rem; position: relative; line-height: 1.5; }
+    .note-author { font-weight: 700; color: var(--coral); font-size: .78rem; }
+    .note-time   { font-size: .72rem; color: var(--gray); }
+
+    /* &#x2500;&#x2500; PACKING &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
+    .pack-list { padding: .5rem .75rem .75rem; display: flex; flex-direction: column; gap: .3rem; }
+    .pack-item { display: flex; align-items: center; gap: .6rem; font-size: .87rem; padding: .3rem .2rem; border-bottom: 1px dashed #e0f2fe; }
+    .pack-item:last-child { border-bottom: none; }
+    .pack-item input[type="checkbox"] { width: 1.1rem; height: 1.1rem; accent-color: var(--ocean); flex-shrink: 0; }
+    .pack-item label { flex: 1; cursor: pointer; }
+    .pack-item.checked label { text-decoration: line-through; color: var(--gray); }
+
+    /* &#x2500;&#x2500; CONTACTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
+    .contacts-grid { padding: .5rem .75rem .75rem; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
+    @media (max-width: 480px) { .contacts-grid { grid-template-columns: 1fr; } }
+    .contact-card { background: var(--light); border: 1px solid var(--border); border-radius: .9rem; padding: .65rem .85rem; position: relative; }
+    .contact-name { font-weight: 700; font-size: .9rem; color: var(--deep); }
+    .contact-role { font-size: .75rem; color: var(--gray); }
+    .contact-info { font-size: .8rem; margin-top: .25rem; color: var(--text); }
+
+    /* &#x2500;&#x2500; MODALS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
+    .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 100; align-items: flex-end; justify-content: center; }
+    .modal-overlay.active { display: flex; }
+    .modal { background: #fff; border-radius: 1.4rem 1.4rem 0 0; padding: 1.5rem 1.25rem; width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; }
+    .modal h3 { font-size: 1.1rem; font-weight: 700; color: var(--deep); margin-bottom: 1rem; }
+    .modal label { font-size: .82rem; font-weight: 600; color: var(--gray); display: block; margin-bottom: .25rem; }
+    .modal input, .modal select, .modal textarea { width: 100%; border: 1px solid #d1d5db; border-radius: .6rem; padding: .55rem .75rem; font-size: .92rem; margin-bottom: .75rem; font-family: inherit; color: var(--text); }
+    .modal input:focus, .modal select:focus, .modal textarea:focus { outline: none; border-color: var(--ocean); }
+    .modal-actions { display: flex; gap: .75rem; margin-top: .25rem; }
+    .btn-primary { flex: 1; background: var(--ocean); color: #fff; border: none; border-radius: .75rem; padding: .7rem; font-size: .95rem; font-weight: 700; cursor: pointer; }
+    .btn-primary:hover { background: var(--deep); }
+    .btn-cancel { flex: 1; background: #f1f5f9; color: var(--gray); border: none; border-radius: .75rem; padding: .7rem; font-size: .95rem; font-weight: 700; cursor: pointer; }
+
+    /* &#x2500;&#x2500; ROOMS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
+    .rooms-grid { padding: .5rem .75rem .75rem; display: grid; grid-template-columns: 1fr 1fr; gap: .65rem; }
+    @media (max-width: 480px) { .rooms-grid { grid-template-columns: 1fr; } }
+    .room-card { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 1px solid var(--border); border-radius: 1rem; padding: .75rem .9rem; position: relative; }
+    .room-number { font-size: 1.4rem; font-weight: 900; color: var(--deep); line-height: 1; }
+    .room-deck { font-size: .72rem; color: var(--gray); margin-bottom: .35rem; }
+    .room-guests { font-size: .85rem; font-weight: 600; color: var(--text); }
+    .room-type { font-size: .75rem; color: var(--ocean); margin-top: .15rem; }
+    .room-notes { font-size: .75rem; color: var(--gray); margin-top: .3rem; font-style: italic; }
+
+    /* &#x2500;&#x2500; EMPTY STATE &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
+    .empty { text-align: center; padding: 1.5rem; color: #9ca3af; font-size: .87rem; }
+    .empty .big { font-size: 2rem; display: block; }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <span class="wave">&#x1F6A2;</span>
+  <h1 id="tripName">Group Cruise 2025</h1>
+  <p class="subtitle" id="tripTagline">Our Adventure Together</p>
+  <div class="hero-meta">
+    <span id="tripDates">&#x1F4C5; Dates TBD</span>
+    <span id="tripShip">&#x1F6F3; Ship TBD</span>
+    <span id="tripPort">&#x2693; Port TBD</span>
+  </div>
+  <div class="hero-btns">
+    <button id="editTripBtn" onclick="openTripModal()">&#x270F;&#xFE0F; Edit Trip Info</button>
+    <div class="lang-toggle">
+      <button id="btnEN" class="active" onclick="setLang('en')">EN</button>
+      <button id="btnTL" onclick="setLang('tl')">TL</button>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+
+  <!-- FLIGHTS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span class="icon">&#x2708;&#xFE0F;</span> <span data-i18n="flights">Flights</span></div>
+      <button class="add-btn" onclick="openFlightModal()" data-i18n="addFlight">+ Add Flight</button>
+    </div>
+    <div class="flights-list" id="flightsList">
+      <div class="empty"><span class="big">&#x2708;&#xFE0F;</span><span data-i18n="emptyFlights">No flights added yet.</span></div>
+    </div>
+  </div>
+
+  <!-- ITINERARY -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span class="icon">&#x1F5D3;</span> <span data-i18n="itinerary">Day-by-Day Itinerary</span></div>
+      <button class="add-btn" onclick="openDayModal()" data-i18n="addDay">+ Add Day</button>
+    </div>
+    <div class="itinerary-list" id="itineraryList">
+      <div class="empty"><span class="big">&#x1F30A;</span><span data-i18n="emptyDays">No days added yet.</span></div>
+    </div>
+  </div>
+
+  <!-- ANNOUNCEMENTS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span class="icon">&#x1F4E3;</span> <span data-i18n="announcements">Announcements &amp; Notes</span></div>
+      <button class="add-btn" onclick="openNoteModal()" data-i18n="post">+ Post</button>
+    </div>
+    <div class="notes-list" id="notesList">
+      <div class="empty"><span class="big">&#x1F4AC;</span><span data-i18n="emptyNotes">No posts yet.</span></div>
+    </div>
+  </div>
+
+  <!-- PACKING CHECKLIST -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span class="icon">&#x1F9F3;</span> <span data-i18n="packing">Shared Packing Checklist</span></div>
+      <button class="add-btn" onclick="openPackModal()" data-i18n="addItem">+ Add Item</button>
+    </div>
+    <div class="pack-list" id="packList">
+      <div class="empty"><span class="big">&#x1F392;</span><span data-i18n="emptyPack">Nothing added yet.</span></div>
+    </div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span class="icon">&#x1F4C7;</span> <span data-i18n="contacts">Group Contacts</span></div>
+      <button class="add-btn" onclick="openContactModal()" data-i18n="addContact">+ Add</button>
+    </div>
+    <div class="contacts-grid" id="contactsGrid">
+      <div class="empty" style="grid-column:1/-1"><span class="big">&#x1F465;</span><span data-i18n="emptyContacts">No contacts added.</span></div>
+    </div>
+  </div>
+
+  <!-- ROOM INFO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title"><span class="icon">&#x1F6CF;</span> <span data-i18n="rooms">Room / Cabin Info</span></div>
+      <button class="add-btn" onclick="openRoomModal()" data-i18n="addRoom">+ Add Room</button>
+    </div>
+    <div class="rooms-grid" id="roomsGrid">
+      <div class="empty" style="grid-column:1/-1"><span class="big">&#x1F6AA;</span><span data-i18n="emptyRooms">No cabins added yet.</span></div>
+    </div>
+  </div>
+
+</div><!-- /shell -->
+
+<div style="text-align:center;padding:1rem 1rem 2.5rem;color:rgba(255,255,255,.5);font-size:.75rem;letter-spacing:.03em">
+  Powered by <strong style="color:rgba(255,255,255,.8);letter-spacing:.05em">DenfrixAi</strong>
+</div>
+
+<!-- &#x2500;&#x2500;&#x2500; MODALS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; -->
+
+<!-- TRIP INFO MODAL -->
+<div class="modal-overlay" id="tripModal">
+  <div class="modal">
+    <h3 data-i18n="tripInfoTitle">&#x270F;&#xFE0F; Trip Info</h3>
+    <label data-i18n="lTripName">Trip Name</label>
+    <input id="mTripName" placeholder="Group Cruise 2025" />
+    <label data-i18n="lTagline">Tagline</label>
+    <input id="mTripTagline" placeholder="Our Adventure Together" />
+    <label data-i18n="lDates">Dates</label>
+    <input id="mTripDates" placeholder="e.g. Jul 12&#x2013;19, 2025" />
+    <label data-i18n="lShipName">Ship Name</label>
+    <input id="mTripShip" placeholder="e.g. Royal Caribbean Harmony" />
+    <label data-i18n="lHomePort">Home Port</label>
+    <input id="mTripPort" placeholder="e.g. Port of Miami" />
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('tripModal')" data-i18n="cancel">Cancel</button>
+      <button class="btn-primary" onclick="saveTripInfo()" data-i18n="save">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLIGHT MODAL -->
+<div class="modal-overlay" id="flightModal">
+  <div class="modal">
+    <h3 id="flightModalTitle">&#x2708;&#xFE0F; Add Flight</h3>
+    <label data-i18n="lWhoFlying">Who's Flying</label>
+    <input id="mFlightPax" placeholder="e.g. Dennis &amp; Maria" />
+    <label data-i18n="lRoute">Route</label>
+    <input id="mFlightRoute" placeholder="e.g. LAX &#x2192; MIA" />
+    <label data-i18n="lDateTime">Date &amp; Time</label>
+    <input id="mFlightDate" placeholder="e.g. Jul 11 &#xB7; Depart 8:00 AM &#x2192; Arrive 4:30 PM" />
+    <label data-i18n="lFlightNum">Flight # / Airline</label>
+    <input id="mFlightNum" placeholder="e.g. AA 2341 &#xB7; American Airlines" />
+    <label data-i18n="lConfNum">Confirmation #</label>
+    <input id="mFlightConf" placeholder="e.g. XJKL92" />
+    <label data-i18n="lStatus">Status</label>
+    <select id="mFlightStatus">
+      <option value="confirmed">&#x2705; Confirmed</option>
+      <option value="pending">&#x23F3; Pending</option>
+      <option value="cancelled">&#x274C; Cancelled</option>
+    </select>
+    <label data-i18n="lNotes">Notes</label>
+    <input id="mFlightNotes" placeholder="e.g. Window seats, 2 checked bags" />
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('flightModal')" data-i18n="cancel">Cancel</button>
+      <button class="btn-primary" id="flightSaveBtn" onclick="saveFlight()">Add Flight</button>
+    </div>
+  </div>
+</div>
+
+<!-- DAY MODAL -->
+<div class="modal-overlay" id="dayModal">
+  <div class="modal">
+    <h3 id="dayModalTitle">&#x1F5D3; Add Itinerary Day</h3>
+    <label data-i18n="lDayLabel">Day Label</label>
+    <input id="mDayLabel" placeholder="e.g. Day 1 &#xB7; Saturday Jul 12" />
+    <label data-i18n="lPortLocation">Port / Location</label>
+    <input id="mDayPort" placeholder="e.g. Miami (Embarkation) or At Sea" />
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('dayModal')" data-i18n="cancel">Cancel</button>
+      <button class="btn-primary" id="daySaveBtn" onclick="saveDay()">Add Day</button>
+    </div>
+  </div>
+</div>
+
+<!-- EVENT MODAL -->
+<div class="modal-overlay" id="eventModal">
+  <div class="modal">
+    <h3 id="eventModalTitle">&#x23F0; Add Event</h3>
+    <label data-i18n="lTime">Time</label>
+    <input id="mEventTime" placeholder="e.g. 9:00 AM or All Day" />
+    <label data-i18n="lDescription">Description</label>
+    <input id="mEventDesc" placeholder="e.g. Cozumel port arrival &#x2014; snorkeling tour" />
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('eventModal')" data-i18n="cancel">Cancel</button>
+      <button class="btn-primary" id="eventSaveBtn" onclick="saveEvent()">Add Event</button>
+    </div>
+  </div>
+</div>
+
+<!-- NOTE MODAL -->
+<div class="modal-overlay" id="noteModal">
+  <div class="modal">
+    <h3 id="noteModalTitle">&#x1F4E3; Post Announcement</h3>
+    <label data-i18n="lYourName">Your Name</label>
+    <input id="mNoteAuthor" placeholder="e.g. Dennis" />
+    <label data-i18n="lMessage">Message</label>
+    <textarea id="mNoteText" rows="3" placeholder="e.g. Meet at Gate B4 at 7:30 AM!"></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('noteModal')" data-i18n="cancel">Cancel</button>
+      <button class="btn-primary" id="noteSaveBtn" onclick="saveNote()">Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- PACK MODAL -->
+<div class="modal-overlay" id="packModal">
+  <div class="modal">
+    <h3 id="packModalTitle">&#x1F9F3; Add Packing Item</h3>
+    <label data-i18n="lItem">Item</label>
+    <input id="mPackItem" placeholder="e.g. Sunscreen SPF 50+" />
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('packModal')" data-i18n="cancel">Cancel</button>
+      <button class="btn-primary" id="packSaveBtn" onclick="savePackItem()">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+<div class="modal-overlay" id="contactModal">
+  <div class="modal">
+    <h3 id="contactModalTitle">&#x1F4C7; Add Contact</h3>
+    <label data-i18n="lName">Name</label>
+    <input id="mContactName" placeholder="e.g. Maria Garcia" />
+    <label data-i18n="lRoleRelation">Role / Relation</label>
+    <input id="mContactRole" placeholder="e.g. Travel Organizer, Roommate&#x2026;" />
+    <label data-i18n="lPhoneInfo">Phone / Info</label>
+    <input id="mContactInfo" placeholder="e.g. &#x1F4F1; (310) 555-0199" />
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('contactModal')" data-i18n="cancel">Cancel</button>
+      <button class="btn-primary" id="contactSaveBtn" onclick="saveContact()">Add</button>
+    </div>
+  </div>
+</div>
+
+<!-- ROOM MODAL -->
+<div class="modal-overlay" id="roomModal">
+  <div class="modal">
+    <h3 id="roomModalTitle">&#x1F6CF; Add Cabin / Room</h3>
+    <label data-i18n="lCabinNum">Cabin / Room Number</label>
+    <input id="mRoomNum" placeholder="e.g. 8542 or Suite 1204" />
+    <label data-i18n="lDeck">Deck</label>
+    <input id="mRoomDeck" placeholder="e.g. Deck 8 &#x2014; Midship" />
+    <label data-i18n="lGuests">Guests Staying Here</label>
+    <input id="mRoomGuests" placeholder="e.g. Dennis &amp; Maria" />
+    <label data-i18n="lRoomType">Room Type / Bed Config</label>
+    <input id="mRoomType" placeholder="e.g. Balcony &#xB7; King &#xB7; Sleeps 2" />
+    <label data-i18n="lNotes">Notes</label>
+    <input id="mRoomNotes" placeholder="e.g. Connecting to cabin 8544, safe code: 1234" />
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('roomModal')" data-i18n="cancel">Cancel</button>
+      <button class="btn-primary" id="roomSaveBtn" onclick="saveRoom()">Add Cabin</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// &#x2500;&#x2500; TRANSLATIONS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+const LANG = {
+  en: {
+    editTrip: '&#x270F;&#xFE0F; Edit Trip Info',
+    datesTBD: 'Dates TBD', shipTBD: 'Ship TBD', portTBD: 'Port TBD',
+    flights: 'Flights', itinerary: 'Day-by-Day Itinerary',
+    announcements: 'Announcements & Notes', packing: 'Shared Packing Checklist',
+    contacts: 'Group Contacts', rooms: 'Room / Cabin Info',
+    addFlight: '+ Add Flight', addDay: '+ Add Day', post: '+ Post',
+    addItem: '+ Add Item', addContact: '+ Add', addRoom: '+ Add Room',
+    tripInfoTitle: 'Trip Info',
+    flightTitle: '&#x2708;&#xFE0F; Add Flight', flightEditTitle: '&#x2708;&#xFE0F; Edit Flight',
+    dayTitle: '&#x1F5D3; Add Itinerary Day', dayEditTitle: '&#x1F5D3; Edit Day',
+    eventTitle: '&#x23F0; Add Event', eventEditTitle: '&#x23F0; Edit Event',
+    noteTitle: '&#x1F4E3; Post Announcement', noteEditTitle: '&#x1F4E3; Edit Announcement',
+    packTitle: '&#x1F9F3; Add Packing Item', packEditTitle: '&#x1F9F3; Edit Item',
+    contactTitle: '&#x1F4C7; Add Contact', contactEditTitle: '&#x1F4C7; Edit Contact',
+    roomTitle: '&#x1F6CF; Add Cabin / Room', roomEditTitle: '&#x1F6CF; Edit Cabin',
+    lTripName: 'Trip Name', lTagline: 'Tagline', lDates: 'Dates',
+    lShipName: 'Ship Name', lHomePort: 'Home Port',
+    lWhoFlying: "Who's Flying", lRoute: 'Route', lDateTime: 'Date & Time',
+    lFlightNum: 'Flight # / Airline', lConfNum: 'Confirmation #',
+    lStatus: 'Status', lNotes: 'Notes',
+    lDayLabel: 'Day Label', lPortLocation: 'Port / Location',
+    lTime: 'Time', lDescription: 'Description',
+    lYourName: 'Your Name', lMessage: 'Message', lItem: 'Item',
+    lName: 'Name', lRoleRelation: 'Role / Relation', lPhoneInfo: 'Phone / Info',
+    lCabinNum: 'Cabin / Room Number', lDeck: 'Deck', lGuests: 'Guests Staying Here',
+    lRoomType: 'Room Type / Bed Config',
+    cancel: 'Cancel', save: 'Save',
+    addFlightBtn: 'Add Flight', editFlightBtn: 'Save Changes',
+    addDayBtn: 'Add Day', editDayBtn: 'Save Changes',
+    addEventBtn: 'Add Event', editEventBtn: 'Save Changes',
+    postBtn: 'Post', editNoteBtn: 'Save Changes',
+    addBtn: 'Add', editBtn: 'Save Changes',
+    addCabinBtn: 'Add Cabin', editCabinBtn: 'Save Changes',
+    editDay: '&#x270F; Edit Day', addEvent: '+ Add Event', deleteDay: 'Delete Day',
+    confirmDeleteDay: 'Remove this day?',
+    emptyFlights: 'No flights added yet.', emptyDays: 'No days added yet.',
+    emptyNotes: 'No posts yet.', emptyPack: 'Nothing added yet.',
+    emptyContacts: 'No contacts added.', emptyRooms: 'No cabins added yet.',
+    emptyEvents: 'No events &#x2014; add one below.',
+    badgeConfirmed: 'confirmed', badgePending: 'pending', badgeCancelled: 'cancelled',
+    anonymousAuthor: 'Someone',
+  },
+  tl: {
+    editTrip: '&#x270F;&#xFE0F; I-edit ang Info ng Biyahe',
+    datesTBD: 'Petsa: Hindi Pa Tiyak', shipTBD: 'Barko: Hindi Pa Tiyak', portTBD: 'Daungan: Hindi Pa Tiyak',
+    flights: 'Mga Lipad', itinerary: 'Araw-araw na Itineraryo',
+    announcements: 'Mga Anunsyo at Tala', packing: 'Shared na Listahan ng Dala',
+    contacts: 'Mga Kontak ng Grupo', rooms: 'Impormasyon ng Silid / Cabin',
+    addFlight: '+ Magdagdag ng Lipad', addDay: '+ Magdagdag ng Araw', post: '+ Mag-post',
+    addItem: '+ Magdagdag ng Aytem', addContact: '+ Magdagdag', addRoom: '+ Magdagdag ng Silid',
+    tripInfoTitle: 'Info ng Biyahe',
+    flightTitle: '&#x2708;&#xFE0F; Magdagdag ng Lipad', flightEditTitle: '&#x2708;&#xFE0F; I-edit ang Lipad',
+    dayTitle: '&#x1F5D3; Magdagdag ng Araw', dayEditTitle: '&#x1F5D3; I-edit ang Araw',
+    eventTitle: '&#x23F0; Magdagdag ng Kaganapan', eventEditTitle: '&#x23F0; I-edit ang Kaganapan',
+    noteTitle: '&#x1F4E3; Mag-post ng Anunsyo', noteEditTitle: '&#x1F4E3; I-edit ang Anunsyo',
+    packTitle: '&#x1F9F3; Magdagdag ng Aytem', packEditTitle: '&#x1F9F3; I-edit ang Aytem',
+    contactTitle: '&#x1F4C7; Magdagdag ng Kontak', contactEditTitle: '&#x1F4C7; I-edit ang Kontak',
+    roomTitle: '&#x1F6CF; Magdagdag ng Cabin', roomEditTitle: '&#x1F6CF; I-edit ang Cabin',
+    lTripName: 'Pangalan ng Biyahe', lTagline: 'Tagline', lDates: 'Mga Petsa',
+    lShipName: 'Pangalan ng Barko', lHomePort: 'Daungan',
+    lWhoFlying: 'Sino ang Lilipas', lRoute: 'Ruta', lDateTime: 'Petsa at Oras',
+    lFlightNum: 'Flight # / Airline', lConfNum: 'Numero ng Kumpirmasyon',
+    lStatus: 'Katayuan', lNotes: 'Mga Tala',
+    lDayLabel: 'Label ng Araw', lPortLocation: 'Daungan / Lokasyon',
+    lTime: 'Oras', lDescription: 'Paglalarawan',
+    lYourName: 'Iyong Pangalan', lMessage: 'Mensahe', lItem: 'Aytem',
+    lName: 'Pangalan', lRoleRelation: 'Papel / Relasyon', lPhoneInfo: 'Telepono / Impormasyon',
+    lCabinNum: 'Numero ng Cabin / Silid', lDeck: 'Deck', lGuests: 'Mga Panauhing Narito',
+    lRoomType: 'Uri ng Silid / Ayos ng Kama',
+    cancel: 'Kanselahin', save: 'I-save',
+    addFlightBtn: 'Idagdag ang Lipad', editFlightBtn: 'I-save ang Pagbabago',
+    addDayBtn: 'Idagdag ang Araw', editDayBtn: 'I-save ang Pagbabago',
+    addEventBtn: 'Idagdag ang Kaganapan', editEventBtn: 'I-save ang Pagbabago',
+    postBtn: 'I-post', editNoteBtn: 'I-save ang Pagbabago',
+    addBtn: 'Idagdag', editBtn: 'I-save ang Pagbabago',
+    addCabinBtn: 'Idagdag ang Cabin', editCabinBtn: 'I-save ang Pagbabago',
+    editDay: '&#x270F; I-edit ang Araw', addEvent: '+ Magdagdag ng Kaganapan', deleteDay: 'Burahin ang Araw',
+    confirmDeleteDay: 'Alisin ang araw na ito?',
+    emptyFlights: 'Wala pang lipad na naidagdag.', emptyDays: 'Wala pang araw na naidagdag.',
+    emptyNotes: 'Wala pang mga post.', emptyPack: 'Wala pang naidagdag.',
+    emptyContacts: 'Wala pang kontak na naidagdag.', emptyRooms: 'Wala pang cabin na naidagdag.',
+    emptyEvents: 'Walang mga kaganapan &#x2014; magdagdag sa ibaba.',
+    badgeConfirmed: 'nakumpirma', badgePending: 'nakabinbin', badgeCancelled: 'nakansela',
+    anonymousAuthor: 'Isang Tao',
+  }
+};
+
+// &#x2500;&#x2500; LANGUAGE &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+const LANG_KEY = 'cruiseBoard_lang';
+let lang = localStorage.getItem(LANG_KEY) || 'en';
+
+function t(key) { return (LANG[lang] || LANG.en)[key] || LANG.en[key] || key; }
+
+function setLang(l) {
+  lang = l;
+  localStorage.setItem(LANG_KEY, lang);
+  document.getElementById('btnEN').classList.toggle('active', lang === 'en');
+  document.getElementById('btnTL').classList.toggle('active', lang === 'tl');
+  applyLang();
+  renderAll();
+}
+
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const val = t(el.dataset.i18n);
+    if (val) el.innerHTML = val;
+  });
+  document.getElementById('editTripBtn').innerHTML = t('editTrip');
+  renderTrip();
+}
+
+// &#x2500;&#x2500; STATE &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+const KEY = 'cruiseBoard_v1';
+let state = {
+  trip: { name: 'Group Cruise 2025', tagline: 'Our Adventure Together', dates: '', ship: '', port: '' },
+  flights: [], days: [], notes: [], pack: [], contacts: [], rooms: [],
+};
+
+function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
+function load() { const raw = localStorage.getItem(KEY); if (raw) state = JSON.parse(raw); }
+function uid()  { return Math.random().toString(36).slice(2,9); }
+
+// editing context: null = add mode, string id = edit mode
+let editingFlight = null, editingDay = null, editingEvent = null;
+let editingNote = null, editingPack = null, editingContact = null, editingRoom = null;
+let activeDay = null;
+
+// &#x2500;&#x2500; INIT &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+load(); applyLang(); renderAll();
+
+function renderAll() {
+  renderTrip(); renderFlights(); renderItinerary();
+  renderNotes(); renderPack(); renderContacts(); renderRooms();
+}
+
+// &#x2500;&#x2500; TRIP &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+function renderTrip() {
+  const tr = state.trip;
+  document.getElementById('tripName').textContent    = tr.name    || 'Group Cruise 2025';
+  document.getElementById('tripTagline').textContent = tr.tagline || '';
+  document.getElementById('tripDates').textContent = '\u{1F4C5} ' + (tr.dates || t('datesTBD'));
+  document.getElementById('tripShip').textContent  = '\u{1F6F3} ' + (tr.ship  || t('shipTBD'));
+  document.getElementById('tripPort').textContent  = '&#x2693; '    + (tr.port  || t('portTBD'));
+}
+
+function openTripModal() {
+  const tr = state.trip;
+  document.getElementById('mTripName').value    = tr.name    || '';
+  document.getElementById('mTripTagline').value = tr.tagline || '';
+  document.getElementById('mTripDates').value   = tr.dates   || '';
+  document.getElementById('mTripShip').value    = tr.ship    || '';
+  document.getElementById('mTripPort').value    = tr.port    || '';
+  openModal('tripModal');
+}
+
+function saveTripInfo() {
+  state.trip = {
+    name:    document.getElementById('mTripName').value.trim()    || 'Group Cruise 2025',
+    tagline: document.getElementById('mTripTagline').value.trim(),
+    dates:   document.getElementById('mTripDates').value.trim(),
+    ship:    document.getElementById('mTripShip').value.trim(),
+    port:    document.getElementById('mTripPort').value.trim(),
+  };
+  save(); renderTrip(); closeModal('tripModal');
+}
+
+// &#x2500;&#x2500; FLIGHTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+function renderFlights() {
+  const el = document.getElementById('flightsList');
+  if (!state.flights.length) {
+    el.innerHTML = `<div class="empty"><span class="big">&#x2708;&#xFE0F;</span>${t('emptyFlights')}</div>`;
+    return;
+  }
+  const badgeLabel = { confirmed: t('badgeConfirmed'), pending: t('badgePending'), cancelled: t('badgeCancelled') };
+  el.innerHTML = state.flights.map(f => `
+    <div class="flight-row ${f.status}">
+      <div class="item-actions">
+        <button class="edit-btn" onclick="openFlightModal('${f.id}')" title="Edit">&#x270F;</button>
+        <button class="del-btn" onclick="deleteFlight('${f.id}')">&#x2715;</button>
+      </div>
+      <div>
+        <div class="flight-route">${f.route}</div>
+        <div class="flight-details">${f.date}</div>
+        ${f.flightNum ? `<div class="flight-details">${f.flightNum}</div>` : ''}
+        ${f.conf ? `<div class="flight-details">${t('lConfNum').replace(' #','')}: <strong>${f.conf}</strong></div>` : ''}
+        ${f.notes ? `<div class="flight-details" style="margin-top:.2rem;color:#64748b">${f.notes}</div>` : ''}
+        ${f.pax ? `<div class="flight-pax">&#x1F464; ${f.pax}</div>` : ''}
+      </div>
+      <span class="flight-badge badge-${f.status}">${badgeLabel[f.status] || f.status}</span>
+    </div>`).join('');
+}
+
+function openFlightModal(id) {
+  editingFlight = id || null;
+  const titleEl  = document.getElementById('flightModalTitle');
+  const saveBtn  = document.getElementById('flightSaveBtn');
+  if (id) {
+    const f = state.flights.find(x => x.id === id);
+    if (!f) return;
+    document.getElementById('mFlightPax').value    = f.pax      || '';
+    document.getElementById('mFlightRoute').value  = f.route    || '';
+    document.getElementById('mFlightDate').value   = f.date     || '';
+    document.getElementById('mFlightNum').value    = f.flightNum|| '';
+    document.getElementById('mFlightConf').value   = f.conf     || '';
+    document.getElementById('mFlightNotes').value  = f.notes    || '';
+    document.getElementById('mFlightStatus').value = f.status   || 'confirmed';
+    titleEl.textContent = t('flightEditTitle');
+    saveBtn.textContent = t('editFlightBtn');
+  } else {
+    ['mFlightPax','mFlightRoute','mFlightDate','mFlightNum','mFlightConf','mFlightNotes'].forEach(i => document.getElementById(i).value = '');
+    document.getElementById('mFlightStatus').value = 'confirmed';
+    titleEl.textContent = t('flightTitle');
+    saveBtn.textContent = t('addFlightBtn');
+  }
+  openModal('flightModal');
+}
+
+function saveFlight() {
+  const data = {
+    pax:       document.getElementById('mFlightPax').value.trim(),
+    route:     document.getElementById('mFlightRoute').value.trim() || 'Flight',
+    date:      document.getElementById('mFlightDate').value.trim(),
+    flightNum: document.getElementById('mFlightNum').value.trim(),
+    conf:      document.getElementById('mFlightConf').value.trim(),
+    status:    document.getElementById('mFlightStatus').value,
+    notes:     document.getElementById('mFlightNotes').value.trim(),
+  };
+  if (editingFlight) {
+    const i = state.flights.findIndex(x => x.id === editingFlight);
+    if (i > -1) state.flights[i] = { ...state.flights[i], ...data };
+    editingFlight = null;
+  } else {
+    state.flights.push({ id: uid(), ...data });
+  }
+  save(); renderFlights(); closeModal('flightModal');
+}
+
+function deleteFlight(id) {
+  state.flights = state.flights.filter(f => f.id !== id);
+  save(); renderFlights();
+}
+
+// &#x2500;&#x2500; ITINERARY &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+function renderItinerary() {
+  const el = document.getElementById('itineraryList');
+  if (!state.days.length) {
+    el.innerHTML = `<div class="empty"><span class="big">&#x1F30A;</span>${t('emptyDays')}</div>`;
+    return;
+  }
+  el.innerHTML = state.days.map(d => `
+    <div class="day-row">
+      <div class="day-header" onclick="toggleDay('${d.id}', this)" id="dh_${d.id}">
+        <div class="day-label">${d.label}</div>
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <div class="day-port">${d.port}</div>
+          <span class="chevron">&#x25BE;</span>
+        </div>
+      </div>
+      <div class="day-events" id="de_${d.id}">
+        ${d.events.length ? d.events.map(e => `
+          <div class="event-item">
+            <span class="event-time">${e.time}</span>
+            <span class="event-desc">${e.desc}</span>
+            <button class="edit-btn" onclick="openEventModal('${d.id}','${e.id}')" title="Edit">&#x270F;</button>
+            <span class="event-del" onclick="deleteEvent('${d.id}','${e.id}')">&#x2715;</span>
+          </div>`).join('') : `<div class="empty" style="padding:.5rem">${t('emptyEvents')}</div>`}
+      </div>
+      <div class="day-actions" id="da_${d.id}" style="display:none">
+        <button class="day-add-btn" onclick="openEventModal('${d.id}')">${t('addEvent')}</button>
+        <button class="day-add-btn" onclick="openDayModal('${d.id}')">${t('editDay')}</button>
+        <button class="day-add-btn" style="color:#ef4444;border-color:#ef4444" onclick="deleteDay('${d.id}')">${t('deleteDay')}</button>
+      </div>
+    </div>`).join('');
+}
+
+function toggleDay(id, header) {
+  const events  = document.getElementById('de_' + id);
+  const actions = document.getElementById('da_' + id);
+  const isOpen  = events.classList.contains('open');
+  events.classList.toggle('open', !isOpen);
+  actions.style.display = isOpen ? 'none' : 'flex';
+  header.classList.toggle('open', !isOpen);
+}
+
+function openDayModal(id) {
+  editingDay = id || null;
+  const titleEl = document.getElementById('dayModalTitle');
+  const saveBtn = document.getElementById('daySaveBtn');
+  if (id) {
+    const d = state.days.find(x => x.id === id);
+    if (!d) return;
+    document.getElementById('mDayLabel').value = d.label || '';
+    document.getElementById('mDayPort').value  = d.port  || '';
+    titleEl.textContent = t('dayEditTitle');
+    saveBtn.textContent = t('editDayBtn');
+  } else {
+    document.getElementById('mDayLabel').value = '';
+    document.getElementById('mDayPort').value  = '';
+    titleEl.textContent = t('dayTitle');
+    saveBtn.textContent = t('addDayBtn');
+  }
+  openModal('dayModal');
+}
+
+function saveDay() {
+  const label = document.getElementById('mDayLabel').value.trim() || 'Day';
+  const port  = document.getElementById('mDayPort').value.trim();
+  if (editingDay) {
+    const i = state.days.findIndex(x => x.id === editingDay);
+    if (i > -1) { state.days[i].label = label; state.days[i].port = port; }
+    editingDay = null;
+  } else {
+    state.days.push({ id: uid(), label, port, events: [] });
+  }
+  save(); renderItinerary(); closeModal('dayModal');
+}
+
+function deleteDay(id) {
+  if (!confirm(t('confirmDeleteDay'))) return;
+  state.days = state.days.filter(d => d.id !== id);
+  save(); renderItinerary();
+}
+
+function openEventModal(dayId, eventId) {
+  activeDay    = dayId;
+  editingEvent = eventId || null;
+  const titleEl = document.getElementById('eventModalTitle');
+  const saveBtn = document.getElementById('eventSaveBtn');
+  if (eventId) {
+    const day = state.days.find(d => d.id === dayId);
+    const ev  = day && day.events.find(e => e.id === eventId);
+    if (!ev) return;
+    document.getElementById('mEventTime').value = ev.time === '&#x2013;' ? '' : ev.time;
+    document.getElementById('mEventDesc').value = ev.desc === 'Event'    ? '' : ev.desc;
+    titleEl.textContent = t('eventEditTitle');
+    saveBtn.textContent = t('editEventBtn');
+  } else {
+    document.getElementById('mEventTime').value = '';
+    document.getElementById('mEventDesc').value = '';
+    titleEl.textContent = t('eventTitle');
+    saveBtn.textContent = t('addEventBtn');
+  }
+  openModal('eventModal');
+}
+
+function saveEvent() {
+  const day = state.days.find(d => d.id === activeDay);
+  if (!day) return;
+  const time = document.getElementById('mEventTime').value.trim() || '&#x2013;';
+  const desc = document.getElementById('mEventDesc').value.trim() || 'Event';
+  if (editingEvent) {
+    const i = day.events.findIndex(e => e.id === editingEvent);
+    if (i > -1) { day.events[i].time = time; day.events[i].desc = desc; }
+    editingEvent = null;
+  } else {
+    day.events.push({ id: uid(), time, desc });
+  }
+  save(); renderItinerary(); closeModal('eventModal');
+  setTimeout(() => {
+    const hdr = document.getElementById('dh_' + activeDay);
+    if (hdr && !document.getElementById('de_' + activeDay).classList.contains('open')) {
+      toggleDay(activeDay, hdr);
+    }
+  }, 50);
+}
+
+function deleteEvent(dayId, eventId) {
+  const day = state.days.find(d => d.id === dayId);
+  if (day) day.events = day.events.filter(e => e.id !== eventId);
+  save(); renderItinerary();
+  setTimeout(() => {
+    const hdr = document.getElementById('dh_' + dayId);
+    if (hdr) {
+      hdr.classList.add('open');
+      document.getElementById('de_' + dayId).classList.add('open');
+      document.getElementById('da_' + dayId).style.display = 'flex';
+    }
+  }, 50);
+}
+
+// &#x2500;&#x2500; NOTES &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+function renderNotes() {
+  const el = document.getElementById('notesList');
+  if (!state.notes.length) {
+    el.innerHTML = `<div class="empty"><span class="big">&#x1F4AC;</span>${t('emptyNotes')}</div>`;
+    return;
+  }
+  el.innerHTML = state.notes.slice().reverse().map(n => `
+    <div class="note-item">
+      <div class="item-actions">
+        <button class="edit-btn" onclick="openNoteModal('${n.id}')" title="Edit">&#x270F;</button>
+        <button class="del-btn" onclick="deleteNote('${n.id}')">&#x2715;</button>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:.3rem;padding-right:3.5rem">
+        <span class="note-author">&#x1F4E3; ${n.author || t('anonymousAuthor')}</span>
+        <span class="note-time">${n.ts}</span>
+      </div>
+      <div>${n.text}</div>
+    </div>`).join('');
+}
+
+function openNoteModal(id) {
+  editingNote = id || null;
+  const titleEl = document.getElementById('noteModalTitle');
+  const saveBtn = document.getElementById('noteSaveBtn');
+  if (id) {
+    const n = state.notes.find(x => x.id === id);
+    if (!n) return;
+    document.getElementById('mNoteAuthor').value = n.author || '';
+    document.getElementById('mNoteText').value   = n.text   || '';
+    titleEl.textContent = t('noteEditTitle');
+    saveBtn.textContent = t('editNoteBtn');
+  } else {
+    document.getElementById('mNoteAuthor').value = '';
+    document.getElementById('mNoteText').value   = '';
+    titleEl.textContent = t('noteTitle');
+    saveBtn.textContent = t('postBtn');
+  }
+  openModal('noteModal');
+}
+
+function saveNote() {
+  const author = document.getElementById('mNoteAuthor').value.trim();
+  const text   = document.getElementById('mNoteText').value.trim() || '&#x2026;';
+  if (editingNote) {
+    const i = state.notes.findIndex(x => x.id === editingNote);
+    if (i > -1) { state.notes[i].author = author; state.notes[i].text = text; }
+    editingNote = null;
+  } else {
+    const now = new Date();
+    state.notes.push({
+      id: uid(), author, text,
+      ts: now.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' ' +
+          now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit'}),
+    });
+  }
+  save(); renderNotes(); closeModal('noteModal');
+}
+
+function deleteNote(id) {
+  state.notes = state.notes.filter(n => n.id !== id);
+  save(); renderNotes();
+}
+
+// &#x2500;&#x2500; PACK &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+function renderPack() {
+  const el = document.getElementById('packList');
+  if (!state.pack.length) {
+    el.innerHTML = `<div class="empty"><span class="big">&#x1F392;</span>${t('emptyPack')}</div>`;
+    return;
+  }
+  el.innerHTML = state.pack.map(p => `
+    <div class="pack-item ${p.checked ? 'checked' : ''}">
+      <input type="checkbox" id="pk_${p.id}" ${p.checked ? 'checked' : ''} onchange="togglePack('${p.id}',this.checked)" />
+      <label for="pk_${p.id}">${p.text}</label>
+      <button class="edit-btn" onclick="openPackModal('${p.id}')" title="Edit">&#x270F;</button>
+      <span class="event-del" onclick="deletePack('${p.id}')">&#x2715;</span>
+    </div>`).join('');
+}
+
+function openPackModal(id) {
+  editingPack = id || null;
+  const titleEl = document.getElementById('packModalTitle');
+  const saveBtn = document.getElementById('packSaveBtn');
+  if (id) {
+    const p = state.pack.find(x => x.id === id);
+    if (!p) return;
+    document.getElementById('mPackItem').value = p.text || '';
+    titleEl.textContent = t('packEditTitle');
+    saveBtn.textContent = t('editBtn');
+  } else {
+    document.getElementById('mPackItem').value = '';
+    titleEl.textContent = t('packTitle');
+    saveBtn.textContent = t('addBtn');
+  }
+  openModal('packModal');
+}
+
+function savePackItem() {
+  const text = document.getElementById('mPackItem').value.trim();
+  if (!text) return;
+  if (editingPack) {
+    const i = state.pack.findIndex(x => x.id === editingPack);
+    if (i > -1) state.pack[i].text = text;
+    editingPack = null;
+  } else {
+    state.pack.push({ id: uid(), text, checked: false });
+  }
+  save(); renderPack(); closeModal('packModal');
+}
+
+function togglePack(id, val) {
+  const item = state.pack.find(p => p.id === id);
+  if (item) item.checked = val;
+  save(); renderPack();
+}
+
+function deletePack(id) {
+  state.pack = state.pack.filter(p => p.id !== id);
+  save(); renderPack();
+}
+
+// &#x2500;&#x2500; CONTACTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+function renderContacts() {
+  const el = document.getElementById('contactsGrid');
+  if (!state.contacts.length) {
+    el.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">&#x1F465;</span>${t('emptyContacts')}</div>`;
+    return;
+  }
+  el.innerHTML = state.contacts.map(c => `
+    <div class="contact-card">
+      <div class="item-actions">
+        <button class="edit-btn" onclick="openContactModal('${c.id}')" title="Edit">&#x270F;</button>
+        <button class="del-btn" onclick="deleteContact('${c.id}')">&#x2715;</button>
+      </div>
+      <div class="contact-name" style="padding-right:3rem">${c.name}</div>
+      <div class="contact-role">${c.role}</div>
+      <div class="contact-info">${c.info}</div>
+    </div>`).join('');
+}
+
+function openContactModal(id) {
+  editingContact = id || null;
+  const titleEl = document.getElementById('contactModalTitle');
+  const saveBtn = document.getElementById('contactSaveBtn');
+  if (id) {
+    const c = state.contacts.find(x => x.id === id);
+    if (!c) return;
+    document.getElementById('mContactName').value = c.name || '';
+    document.getElementById('mContactRole').value = c.role || '';
+    document.getElementById('mContactInfo').value = c.info || '';
+    titleEl.textContent = t('contactEditTitle');
+    saveBtn.textContent = t('editBtn');
+  } else {
+    ['mContactName','mContactRole','mContactInfo'].forEach(i => document.getElementById(i).value = '');
+    titleEl.textContent = t('contactTitle');
+    saveBtn.textContent = t('addBtn');
+  }
+  openModal('contactModal');
+}
+
+function saveContact() {
+  const data = {
+    name: document.getElementById('mContactName').value.trim() || 'Contact',
+    role: document.getElementById('mContactRole').value.trim(),
+    info: document.getElementById('mContactInfo').value.trim(),
+  };
+  if (editingContact) {
+    const i = state.contacts.findIndex(x => x.id === editingContact);
+    if (i > -1) state.contacts[i] = { ...state.contacts[i], ...data };
+    editingContact = null;
+  } else {
+    state.contacts.push({ id: uid(), ...data });
+  }
+  save(); renderContacts(); closeModal('contactModal');
+}
+
+function deleteContact(id) {
+  state.contacts = state.contacts.filter(c => c.id !== id);
+  save(); renderContacts();
+}
+
+// &#x2500;&#x2500; ROOMS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+function renderRooms() {
+  const el = document.getElementById('roomsGrid');
+  if (!state.rooms.length) {
+    el.innerHTML = `<div class="empty" style="grid-column:1/-1"><span class="big">&#x1F6AA;</span>${t('emptyRooms')}</div>`;
+    return;
+  }
+  el.innerHTML = state.rooms.map(r => `
+    <div class="room-card">
+      <div class="item-actions">
+        <button class="edit-btn" onclick="openRoomModal('${r.id}')" title="Edit">&#x270F;</button>
+        <button class="del-btn" onclick="deleteRoom('${r.id}')">&#x2715;</button>
+      </div>
+      <div class="room-number" style="padding-right:3rem">${r.num || '&#x2014;'}</div>
+      <div class="room-deck">${r.deck}</div>
+      <div class="room-guests">&#x1F464; ${r.guests}</div>
+      <div class="room-type">${r.type}</div>
+      ${r.notes ? `<div class="room-notes">${r.notes}</div>` : ''}
+    </div>`).join('');
+}
+
+function openRoomModal(id) {
+  editingRoom = id || null;
+  const titleEl = document.getElementById('roomModalTitle');
+  const saveBtn = document.getElementById('roomSaveBtn');
+  if (id) {
+    const r = state.rooms.find(x => x.id === id);
+    if (!r) return;
+    document.getElementById('mRoomNum').value    = r.num    || '';
+    document.getElementById('mRoomDeck').value   = r.deck   || '';
+    document.getElementById('mRoomGuests').value = r.guests || '';
+    document.getElementById('mRoomType').value   = r.type   || '';
+    document.getElementById('mRoomNotes').value  = r.notes  || '';
+    titleEl.textContent = t('roomEditTitle');
+    saveBtn.textContent = t('editCabinBtn');
+  } else {
+    ['mRoomNum','mRoomDeck','mRoomGuests','mRoomType','mRoomNotes'].forEach(i => document.getElementById(i).value = '');
+    titleEl.textContent = t('roomTitle');
+    saveBtn.textContent = t('addCabinBtn');
+  }
+  openModal('roomModal');
+}
+
+function saveRoom() {
+  const data = {
+    num:    document.getElementById('mRoomNum').value.trim(),
+    deck:   document.getElementById('mRoomDeck').value.trim(),
+    guests: document.getElementById('mRoomGuests').value.trim() || 'TBD',
+    type:   document.getElementById('mRoomType').value.trim(),
+    notes:  document.getElementById('mRoomNotes').value.trim(),
+  };
+  if (editingRoom) {
+    const i = state.rooms.findIndex(x => x.id === editingRoom);
+    if (i > -1) state.rooms[i] = { ...state.rooms[i], ...data };
+    editingRoom = null;
+  } else {
+    state.rooms.push({ id: uid(), ...data });
+  }
+  save(); renderRooms(); closeModal('roomModal');
+}
+
+function deleteRoom(id) {
+  state.rooms = state.rooms.filter(r => r.id !== id);
+  save(); renderRooms();
+}
+
+// &#x2500;&#x2500; MODAL UTILS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+function openModal(id)  { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+document.querySelectorAll('.modal-overlay').forEach(ov => {
+  ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('active'); });
+});
+</script>
+</body>
+</html>
