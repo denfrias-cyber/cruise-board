@@ -598,13 +598,13 @@ function openFlightModal(id) {
     document.getElementById('mFlightConf').value   = f.conf     || '';
     document.getElementById('mFlightNotes').value  = f.notes    || '';
     document.getElementById('mFlightStatus').value = f.status   || 'confirmed';
-    titleEl.textContent = t('flightEditTitle');
-    saveBtn.textContent = t('editFlightBtn');
+    titleEl.innerHTML = t('flightEditTitle');
+    saveBtn.innerHTML = t('editFlightBtn');
   } else {
     ['mFlightPax','mFlightRoute','mFlightDate','mFlightNum','mFlightConf','mFlightNotes'].forEach(i => document.getElementById(i).value = '');
     document.getElementById('mFlightStatus').value = 'confirmed';
-    titleEl.textContent = t('flightTitle');
-    saveBtn.textContent = t('addFlightBtn');
+    titleEl.innerHTML = t('flightTitle');
+    saveBtn.innerHTML = t('addFlightBtn');
   }
   openModal('flightModal');
 }
@@ -685,13 +685,13 @@ function openDayModal(id) {
     if (!d) return;
     document.getElementById('mDayLabel').value = d.label || '';
     document.getElementById('mDayPort').value  = d.port  || '';
-    titleEl.textContent = t('dayEditTitle');
-    saveBtn.textContent = t('editDayBtn');
+    titleEl.innerHTML = t('dayEditTitle');
+    saveBtn.innerHTML = t('editDayBtn');
   } else {
     document.getElementById('mDayLabel').value = '';
     document.getElementById('mDayPort').value  = '';
-    titleEl.textContent = t('dayTitle');
-    saveBtn.textContent = t('addDayBtn');
+    titleEl.innerHTML = t('dayTitle');
+    saveBtn.innerHTML = t('addDayBtn');
   }
   openModal('dayModal');
 }
@@ -726,13 +726,13 @@ function openEventModal(dayId, eventId) {
     if (!ev) return;
     document.getElementById('mEventTime').value = ev.time === '&#x2013;' ? '' : ev.time;
     document.getElementById('mEventDesc').value = ev.desc === 'Event'    ? '' : ev.desc;
-    titleEl.textContent = t('eventEditTitle');
-    saveBtn.textContent = t('editEventBtn');
+    titleEl.innerHTML = t('eventEditTitle');
+    saveBtn.innerHTML = t('editEventBtn');
   } else {
     document.getElementById('mEventTime').value = '';
     document.getElementById('mEventDesc').value = '';
-    titleEl.textContent = t('eventTitle');
-    saveBtn.textContent = t('addEventBtn');
+    titleEl.innerHTML = t('eventTitle');
+    saveBtn.innerHTML = t('addEventBtn');
   }
   openModal('eventModal');
 }
@@ -802,13 +802,13 @@ function openNoteModal(id) {
     if (!n) return;
     document.getElementById('mNoteAuthor').value = n.author || '';
     document.getElementById('mNoteText').value   = n.text   || '';
-    titleEl.textContent = t('noteEditTitle');
-    saveBtn.textContent = t('editNoteBtn');
+    titleEl.innerHTML = t('noteEditTitle');
+    saveBtn.innerHTML = t('editNoteBtn');
   } else {
     document.getElementById('mNoteAuthor').value = '';
     document.getElementById('mNoteText').value   = '';
-    titleEl.textContent = t('noteTitle');
-    saveBtn.textContent = t('postBtn');
+    titleEl.innerHTML = t('noteTitle');
+    saveBtn.innerHTML = t('postBtn');
   }
   openModal('noteModal');
 }
@@ -860,12 +860,12 @@ function openPackModal(id) {
     const p = state.pack.find(x => x.id === id);
     if (!p) return;
     document.getElementById('mPackItem').value = p.text || '';
-    titleEl.textContent = t('packEditTitle');
-    saveBtn.textContent = t('editBtn');
+    titleEl.innerHTML = t('packEditTitle');
+    saveBtn.innerHTML = t('editBtn');
   } else {
     document.getElementById('mPackItem').value = '';
-    titleEl.textContent = t('packTitle');
-    saveBtn.textContent = t('addBtn');
+    titleEl.innerHTML = t('packTitle');
+    saveBtn.innerHTML = t('addBtn');
   }
   openModal('packModal');
 }
@@ -923,12 +923,12 @@ function openContactModal(id) {
     document.getElementById('mContactName').value = c.name || '';
     document.getElementById('mContactRole').value = c.role || '';
     document.getElementById('mContactInfo').value = c.info || '';
-    titleEl.textContent = t('contactEditTitle');
-    saveBtn.textContent = t('editBtn');
+    titleEl.innerHTML = t('contactEditTitle');
+    saveBtn.innerHTML = t('editBtn');
   } else {
     ['mContactName','mContactRole','mContactInfo'].forEach(i => document.getElementById(i).value = '');
-    titleEl.textContent = t('contactTitle');
-    saveBtn.textContent = t('addBtn');
+    titleEl.innerHTML = t('contactTitle');
+    saveBtn.innerHTML = t('addBtn');
   }
   openModal('contactModal');
 }
@@ -987,12 +987,12 @@ function openRoomModal(id) {
     document.getElementById('mRoomGuests').value = r.guests || '';
     document.getElementById('mRoomType').value   = r.type   || '';
     document.getElementById('mRoomNotes').value  = r.notes  || '';
-    titleEl.textContent = t('roomEditTitle');
-    saveBtn.textContent = t('editCabinBtn');
+    titleEl.innerHTML = t('roomEditTitle');
+    saveBtn.innerHTML = t('editCabinBtn');
   } else {
     ['mRoomNum','mRoomDeck','mRoomGuests','mRoomType','mRoomNotes'].forEach(i => document.getElementById(i).value = '');
-    titleEl.textContent = t('roomTitle');
-    saveBtn.textContent = t('addCabinBtn');
+    titleEl.innerHTML = t('roomTitle');
+    saveBtn.innerHTML = t('addCabinBtn');
   }
   openModal('roomModal');
 }
