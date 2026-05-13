@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>&#x1F6F3; Cruise Group Board</title>
   <meta property="og:title" content="Group Cruise 2025" id="ogTitle" />
-  <meta property="og:description" content="Flights &#183; Itinerary &#183; Rooms &#183; Packing" id="ogDesc" />
+  <meta property="og:description" content="Flights · Itinerary · Rooms · Packing" id="ogDesc" />
   <meta property="og:image" content="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f6f3.png" />
   <meta property="og:url" content="https://denfrias-cyber.github.io/cruise-board/" />
   <meta property="og:type" content="website" />
@@ -318,8 +318,8 @@
     <input id="mTripPin" type="password" placeholder="Set a PIN to lock editing&#x2026;" maxlength="12" autocomplete="new-password" />
     <p class="pin-hint" id="pinHint"></p>
     <hr class="pin-divider" />
-    <label style="color:var(--coral)">&#x1F512; Admin: GitHub Token <span style="font-size:.72rem;font-weight:400;color:var(--gray)">(stored on this device &#8212; enables Publish)</span></label>
-    <input id="mGhTokenTrip" type="password" placeholder="ghp_xxxxxxxxxxxx &#8212; paste once, stored locally" autocomplete="off" />
+    <label style="color:var(--coral)">&#x1F512; Admin: GitHub Token <span style="font-size:.72rem;font-weight:400;color:var(--gray)">(stored on this device — enables Publish)</span></label>
+    <input id="mGhTokenTrip" type="password" placeholder="ghp_xxxxxxxxxxxx — paste once, stored locally" autocomplete="off" />
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('tripModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" onclick="saveTripInfo()" data-i18n="save">Save</button>
@@ -613,13 +613,13 @@ async function loadRemote() {
     const remote = await res.json();
     if (!remote || !remote.trip) return;
     state = remote;
-    // don't save() &#8212; guests always fetch fresh, never persist
+    // don't save() — guests always fetch fresh, never persist
     applySectionOrder(); renderAll(); updateSortBtns(); updateLockState();
   } catch(e) {}
 }
 function uid()  { return Math.random().toString(36).slice(2,9); }
 
-// &#9472;&#9472; PUBLISH &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+// ── PUBLISH ───────────────────────────────────────────────────────────────────
 function showToast(msg, duration) {
   const t = document.getElementById('publishToast');
   t.textContent = msg;
@@ -641,14 +641,14 @@ function toB64(str) {
 async function publishBoard() {
   const token = localStorage.getItem('cruise_gh_token');
   if (!token) return;
-  showToast('Publishing&#8230;', 30000);
+  showToast('Publishing…', 30000);
   try {
     const headers = { Authorization: 'token ' + token, 'Content-Type': 'application/json' };
     const base = 'https://api.github.com/repos/denfrias-cyber/cruise-board/contents/';
     const pub = stateForPublish();
     const stateJson = JSON.stringify(pub);
 
-    // 1. Push data.json &#8212; fast, bypasses CDN cache on next load
+    // 1. Push data.json — fast, bypasses CDN cache on next load
     const dataApi = base + 'data.json';
     const dataGet = await fetch(dataApi, { headers });
     const dataSha = dataGet.ok ? (await dataGet.json()).sha : undefined;
@@ -674,9 +674,9 @@ async function publishBoard() {
     });
     if (!htmlRes.ok) throw new Error('index.html push failed: ' + (await htmlRes.json()).message);
 
-    showToast('&#9989; Published! Updates live now.', 6000);
+    showToast('✅ Published! Updates live now.', 6000);
   } catch(e) {
-    showToast('&#10060; ' + e.message, 5000);
+    showToast('❌ ' + e.message, 5000);
   }
 }
 
@@ -750,7 +750,7 @@ function openTripModal() {
   document.getElementById('mTripShip').value    = tr.ship    || '';
   document.getElementById('mTripPort').value    = tr.port    || '';
   document.getElementById('mTripPin').value     = tr.pin     || '';
-  document.getElementById('pinHint').textContent = tr.pin ? 'PIN is set. Edit to change, or clear to remove.' : 'No PIN set &#8212; board is open to all.';
+  document.getElementById('pinHint').textContent = tr.pin ? 'PIN is set. Edit to change, or clear to remove.' : 'No PIN set — board is open to all.';
   document.getElementById('mGhTokenTrip').value = localStorage.getItem('cruise_gh_token') || '';
   openModal('tripModal');
 }
@@ -772,7 +772,7 @@ function saveTripInfo() {
   save(); renderTrip(); updateLockState(); closeModal('tripModal');
 }
 
-// &#9472;&#9472; PIN LOCK &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+// ── PIN LOCK ───────────────────────────────────────────────────────────────
 function updateLockState() {
   const hasPin = !!state.trip.pin;
   if (!hasPin) sessionUnlocked = true;
@@ -816,9 +816,18 @@ function submitPin() {
 async function doneEditing() {
   const btn = document.getElementById('doneBtn');
   const token = localStorage.getItem('cruise_gh_token');
+  if (!token) {
+    showToast('&#x26A0;&#xFE0F; No token found. Open Edit Trip Info &#x2192; scroll down &#x2192; paste your GitHub token.', 7000);
+    openTripModal();
+    setTimeout(() => {
+      const tf = document.getElementById('mGhTokenTrip');
+      if (tf) { tf.scrollIntoView({ behavior: 'smooth', block: 'center' }); tf.focus(); }
+    }, 300);
+    return;
+  }
   btn.disabled = true;
-  btn.innerHTML = token ? 'Publishing&#x2026;' : 'Done&#x2026;';
-  if (token) await publishBoard();
+  btn.innerHTML = 'Publishing&#x2026;';
+  await publishBoard();
   sessionUnlocked = false;
   updateLockState();
 }
@@ -1297,7 +1306,7 @@ function deleteRoom(id) {
 // &#x2500;&#x2500; MODAL UTILS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
 function openModal(id)  { document.getElementById(id).classList.add('active'); }
 
-// &#9472;&#9472; AUTO-SAVE &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
+// ── AUTO-SAVE ──────────────────────────────────────────────────────────────
 let _autoSaveTimer;
 const _autoSaveFnMap = {
   flightModal:  () => { if (editingFlight)  saveFlight(true); },
