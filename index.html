@@ -319,6 +319,9 @@
     <label>Edit PIN</label>
     <input id="mTripPin" type="password" placeholder="Set a PIN to lock editing&#x2026;" maxlength="12" autocomplete="new-password" />
     <p class="pin-hint" id="pinHint"></p>
+    <hr class="pin-divider" />
+    <label style="color:var(--coral)">&#x1F512; Admin: GitHub Token <span style="font-size:.72rem;font-weight:400;color:var(--gray)">(stored on this device &#8212; enables Publish)</span></label>
+    <input id="mGhTokenTrip" type="password" placeholder="ghp_xxxxxxxxxxxx &#8212; paste once, stored locally" autocomplete="off" />
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('tripModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" onclick="saveTripInfo()" data-i18n="save">Save</button>
@@ -466,28 +469,8 @@
   </div>
 </div>
 
-<!-- PUBLISH MODAL -->
-<div class="modal-overlay" id="publishModal">
-  <div class="modal">
-    <h3>&#x1F680; Publish to Group</h3>
-    <p style="font-size:.88rem;color:var(--gray);margin-bottom:1rem;">This will push your current board to the live link. Your group will see the updated info instantly.</p>
-    <label>GitHub Token <span style="font-size:.75rem;color:var(--gray)">(stored on this device only)</span></label>
-    <input id="mGhToken" type="password" placeholder="ghp_xxxxxxxxxxxx" />
-    <div id="publishError" style="display:none;color:#ef4444;font-size:.82rem;margin-top:-.5rem;margin-bottom:.5rem;"></div>
-    <div id="publishSuccess" style="display:none;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:.75rem;padding:.75rem 1rem;margin-bottom:.75rem;">
-      <div style="color:#16a34a;font-weight:700;margin-bottom:.4rem;">&#x2705; Published!</div>
-      <div style="font-size:.85rem;color:var(--gray);margin-bottom:.5rem;">Share this link with your group:</div>
-      <div style="display:flex;gap:.5rem;align-items:center;">
-        <input id="shareUrl" readonly style="flex:1;font-size:.8rem;background:#e9fdf0;border:1px solid #bbf7d0;color:#166534;" value="https://denfrias-cyber.github.io/cruise-board/" />
-        <button onclick="copyShareLink()" style="background:var(--ocean);color:#fff;border:none;border-radius:.5rem;padding:.45rem .85rem;font-size:.82rem;font-weight:700;cursor:pointer;white-space:nowrap" id="copyLinkBtn">Copy Link</button>
-      </div>
-    </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('publishModal')">Cancel</button>
-      <button class="btn-primary" id="publishConfirmBtn" onclick="doPublish()">&#x1F680; Publish Now</button>
-    </div>
-  </div>
-</div>
+<!-- PUBLISH TOAST -->
+<div id="publishToast" style="display:none;position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;border-radius:999px;padding:.6rem 1.25rem;font-size:.88rem;font-weight:600;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.3);white-space:nowrap;"></div>
 
 <!-- PUBLISHED STATE &#8212; updated on each Publish -->
 <script id="publishedState" type="application/json">{"trip":{"name":"Group Cruise 2025","tagline":"Our Adventure Together","dates":"","ship":"","port":"","pin":""},"flights":[],"days":[],"notes":[],"pack":[],"contacts":[],"rooms":[],"sectionOrder":["flights","itinerary","announcements","packing","contacts","rooms"]}</script>
@@ -638,68 +621,47 @@ function saveToFile() {
 }
 
 // &#9472;&#9472; PUBLISH &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
-function publishBoard() {
-  const stored = localStorage.getItem('cruise_gh_token') || '';
-  document.getElementById('mGhToken').value = stored;
-  document.getElementById('publishError').style.display = 'none';
-  document.getElementById('publishSuccess').style.display = 'none';
-  document.getElementById('publishConfirmBtn').disabled = false;
-  document.getElementById('publishConfirmBtn').innerHTML = '&#x1F680; Publish Now';
-  openModal('publishModal');
+function showToast(msg, duration) {
+  const t = document.getElementById('publishToast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => { t.style.display = 'none'; }, duration || 3000);
 }
 
-async function doPublish() {
-  const tokenInput = document.getElementById('mGhToken');
-  const token = tokenInput.value.trim();
-  const errEl  = document.getElementById('publishError');
-  const okEl   = document.getElementById('publishSuccess');
-  const btn    = document.getElementById('publishConfirmBtn');
-  errEl.style.display = 'none';
-  if (!token) { errEl.textContent = 'Please enter your GitHub token.'; errEl.style.display = 'block'; return; }
-  localStorage.setItem('cruise_gh_token', token);
+async function publishBoard() {
+  const token = localStorage.getItem('cruise_gh_token');
+  if (!token) return;
+  const btn = document.getElementById('publishBtn');
   btn.disabled = true;
   btn.innerHTML = 'Publishing&#x2026;';
+  showToast('Publishing&#x2026;', 30000);
   try {
     const api = 'https://api.github.com/repos/denfrias-cyber/cruise-board/contents/index.html';
     const headers = { Authorization: 'token ' + token, 'Content-Type': 'application/json' };
-    // 1. Get current SHA + content
     const getRes = await fetch(api, { headers });
-    if (!getRes.ok) throw new Error('Could not reach GitHub. Check your token.');
+    if (!getRes.ok) throw new Error('GitHub error. Re-enter your token in Edit Trip Info.');
     const { sha, content: b64 } = await getRes.json();
-    // 2. Decode, replace publishedState, re-encode
-    const bytes   = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
-    let   html    = new TextDecoder().decode(bytes);
+    const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    let html = new TextDecoder().decode(bytes);
     const stateJson = JSON.stringify({ ...state, trip: { ...state.trip, pin: state.trip.pin || '' } });
-    html = html.replace(
-      /(<script id="publishedState"[^>]*>)[\s\S]*?(<\/script>)/,
-      '$1' + stateJson + '$2'
-    );
-    // 3. Update OG title to match trip name
+    html = html.replace(/(<script id="publishedState"[^>]*>)[\s\S]*?(<\/script>)/, '$1' + stateJson + '$2');
     html = html.replace(/(<meta property="og:title"[^>]*content=")[^"]*(")/,
       '$1' + (state.trip.name || 'Group Cruise 2025') + '$2');
-    // 4. Push
     const newB64 = btoa(String.fromCharCode(...new TextEncoder().encode(html)));
     const putRes = await fetch(api, {
       method: 'PUT', headers,
       body: JSON.stringify({ message: 'Publish board update', content: newB64, sha })
     });
     if (!putRes.ok) throw new Error('Push failed: ' + (await putRes.json()).message);
-    okEl.style.display = 'block';
     btn.innerHTML = '&#x2705; Published!';
+    showToast('&#9989; Published! Link: https://denfrias-cyber.github.io/cruise-board/', 8000);
+    setTimeout(() => { btn.disabled = false; btn.innerHTML = '&#x1F680; Publish'; }, 4000);
   } catch(e) {
     btn.disabled = false;
-    btn.innerHTML = '&#x1F680; Publish Now';
-    errEl.textContent = e.message;
-    errEl.style.display = 'block';
+    btn.innerHTML = '&#x1F680; Publish';
+    showToast('&#10060; ' + e.message, 5000);
   }
-}
-
-function copyShareLink() {
-  navigator.clipboard.writeText('https://denfrias-cyber.github.io/cruise-board/').then(() => {
-    const btn = document.getElementById('copyLinkBtn');
-    btn.textContent = 'Copied!';
-    setTimeout(() => { btn.textContent = 'Copy Link'; }, 2000);
-  });
 }
 
 // editing context: null = add mode, string id = edit mode
@@ -772,11 +734,15 @@ function openTripModal() {
   document.getElementById('mTripPort').value    = tr.port    || '';
   document.getElementById('mTripPin').value     = tr.pin     || '';
   document.getElementById('pinHint').textContent = tr.pin ? 'PIN is set. Edit to change, or clear to remove.' : 'No PIN set &#8212; board is open to all.';
+  document.getElementById('mGhTokenTrip').value = localStorage.getItem('cruise_gh_token') || '';
   openModal('tripModal');
 }
 
 function saveTripInfo() {
-  const newPin = document.getElementById('mTripPin').value;
+  const newPin   = document.getElementById('mTripPin').value;
+  const newToken = document.getElementById('mGhTokenTrip').value.trim();
+  if (newToken) localStorage.setItem('cruise_gh_token', newToken);
+  else if (newToken === '' && document.getElementById('mGhTokenTrip').dataset.cleared) localStorage.removeItem('cruise_gh_token');
   state.trip = {
     name:    document.getElementById('mTripName').value.trim()    || 'Group Cruise 2025',
     tagline: document.getElementById('mTripTagline').value.trim(),
@@ -803,7 +769,7 @@ function updateLockState() {
   const editTripBtn = document.getElementById('editTripBtn');
   if (editTripBtn) editTripBtn.style.display = editable ? '' : 'none';
   const publishBtn = document.getElementById('publishBtn');
-  if (publishBtn) publishBtn.style.display = editable ? '' : 'none';
+  if (publishBtn) publishBtn.style.display = (editable && !!localStorage.getItem('cruise_gh_token')) ? '' : 'none';
   document.querySelectorAll('.add-btn, .edit-btn, .del-btn, .sort-btns').forEach(el => {
     el.style.display = editable ? '' : 'none';
   });
