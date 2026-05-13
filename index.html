@@ -625,7 +625,7 @@ async function publishBoard() {
     const getRes = await fetch(api, { headers });
     if (!getRes.ok) throw new Error('GitHub error. Re-enter token in Edit Trip Info.');
     const { sha, content: b64 } = await getRes.json();
-    const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+    const bytes = Uint8Array.from(atob(b64.replace(/\n/g, '')), c => c.charCodeAt(0));
     let html = new TextDecoder().decode(bytes);
     const stateJson = JSON.stringify({ ...state, trip: { ...state.trip, pin: state.trip.pin || '' } });
     html = html.replace(/(<script id="publishedState"[^>]*>)[\s\S]*?(<\/script>)/, '$1' + stateJson + '$2');
