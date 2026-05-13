@@ -631,7 +631,10 @@ async function publishBoard() {
     html = html.replace(/(<script id="publishedState"[^>]*>)[\s\S]*?(<\/script>)/, '$1' + stateJson + '$2');
     html = html.replace(/(<meta property="og:title"[^>]*content=")[^"]*(")/,
       '$1' + (state.trip.name || 'Group Cruise 2025') + '$2');
-    const newB64 = btoa(String.fromCharCode(...new TextEncoder().encode(html)));
+    const bytes2 = new TextEncoder().encode(html);
+    let binary = '';
+    for (let i = 0; i < bytes2.length; i++) binary += String.fromCharCode(bytes2[i]);
+    const newB64 = btoa(binary);
     const putRes = await fetch(api, {
       method: 'PUT', headers,
       body: JSON.stringify({ message: 'Publish board update', content: newB64, sha })
@@ -778,15 +781,11 @@ function submitPin() {
 async function doneEditing() {
   const btn = document.getElementById('doneBtn');
   const token = localStorage.getItem('cruise_gh_token');
-  if (token) {
-    btn.disabled = true;
-    btn.innerHTML = 'Publishing&#x2026;';
-    await publishBoard();
-  }
+  btn.disabled = true;
+  btn.innerHTML = token ? 'Publishing&#x2026;' : 'Done&#x2026;';
+  if (token) await publishBoard();
   sessionUnlocked = false;
   updateLockState();
-  btn.disabled = false;
-  btn.innerHTML = '&#x2705; Done';
 }
 
 // &#x2500;&#x2500; FLIGHTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
