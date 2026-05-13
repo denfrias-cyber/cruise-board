@@ -606,13 +606,14 @@ function load() {
   if (published) { try { state = JSON.parse(published.textContent); } catch(e) {} }
 }
 async function loadRemote() {
+  if (localStorage.getItem('cruise_gh_token')) return; // owner uses localStorage
   try {
     const res = await fetch(RAW_DATA + '?t=' + Date.now(), { cache: 'no-store' });
     if (!res.ok) return;
     const remote = await res.json();
     if (!remote || !remote.trip) return;
     state = remote;
-    save();
+    // don't save() &#8212; guests always fetch fresh, never persist
     applySectionOrder(); renderAll(); updateSortBtns(); updateLockState();
   } catch(e) {}
 }
