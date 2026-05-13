@@ -42,6 +42,14 @@
     .hero-meta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
     .hero-meta span { background: rgba(255,255,255,.2); border-radius: 999px; padding: .3rem .9rem; font-size: .85rem; backdrop-filter: blur(4px); }
     .hero-btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
+    .status-bar { display: flex; align-items: center; justify-content: center; gap: .5rem; margin-top: .85rem; min-height: 2rem; }
+    .status-pill { background: rgba(255,255,255,.22); backdrop-filter: blur(6px); border: 1.5px solid rgba(255,255,255,.55); color: #fff; border-radius: 999px; padding: .45rem 1.3rem; font-size: 1rem; font-weight: 700; letter-spacing: .01em; }
+    .status-pill.empty { opacity: .45; font-style: italic; font-weight: 400; font-size: .88rem; }
+    .status-edit-btn { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.45); color: #fff; border-radius: 999px; padding: .3rem .8rem; font-size: .8rem; cursor: pointer; transition: background .15s; }
+    .status-edit-btn:hover { background: rgba(255,255,255,.35); }
+    .status-presets { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .85rem; }
+    .status-preset-btn { background: var(--light); border: 1px solid var(--border); border-radius: 999px; padding: .35rem .9rem; font-size: .83rem; cursor: pointer; color: var(--text); transition: background .15s; }
+    .status-preset-btn:hover { background: var(--sky); }
     #editTripBtn { background: rgba(255,255,255,.25); border: 1px solid rgba(255,255,255,.5); color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; }
     #editTripBtn:hover { background: rgba(255,255,255,.4); }
     #doneBtn { background: #22c55e; border: none; color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; font-weight: 700; transition: background .15s; }
@@ -168,6 +176,10 @@
     <span id="tripDates">&#x1F4C5; Dates TBD</span>
     <span id="tripShip">&#x1F6F3; Ship TBD</span>
     <span id="tripPort">&#x2693; Port TBD</span>
+  </div>
+  <div class="status-bar" id="statusBar">
+    <span class="status-pill empty" id="statusDisplay">No status set</span>
+    <button class="status-edit-btn" id="statusEditBtn" onclick="openStatusModal()" style="display:none">&#x270F;&#xFE0F; Status</button>
   </div>
   <div class="hero-btns" id="adminBtns" style="display:none">
     <button id="editTripBtn" onclick="openTripModal()">&#x270F;&#xFE0F; Edit Trip Info</button>
@@ -428,6 +440,26 @@
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('roomModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" id="roomSaveBtn" onclick="saveRoom()">Add Cabin</button>
+    </div>
+  </div>
+</div>
+
+<!-- STATUS MODAL -->
+<div class="modal-overlay" id="statusModal">
+  <div class="modal">
+    <h3>&#x1F4CD; Today's Status</h3>
+    <div class="status-presets">
+      <button class="status-preset-btn" onclick="applyStatusPreset('&#x1F6EB; Embarkation Day')">🛫 Embarkation Day</button>
+      <button class="status-preset-btn" onclick="applyStatusPreset('&#x1F30A; Cruising at Sea')">🌊 Cruising at Sea</button>
+      <button class="status-preset-btn" onclick="applyStatusPreset('&#x2693; Docked @ ')">⚓ Docked @ …</button>
+      <button class="status-preset-btn" onclick="applyStatusPreset('&#x1F3D6;&#xFE0F; Port Day @ ')">🏖️ Port Day @ …</button>
+      <button class="status-preset-btn" onclick="applyStatusPreset('&#x1F3E0; Disembarkation Day')">🏠 Disembarkation Day</button>
+    </div>
+    <label>Custom Status</label>
+    <input id="mStatusText" placeholder="e.g. ⚓ Docked @ Juneau, Alaska" oninput="scheduleAutoSave()" onkeydown="if(event.key==='Enter'){event.preventDefault();saveStatus();}" />
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal('statusModal')">Cancel</button>
+      <button class="btn-primary" onclick="saveStatus()">Set Status</button>
     </div>
   </div>
 </div>
@@ -708,6 +740,34 @@ function renderTrip() {
   document.getElementById('tripDates').textContent = '\u{1F4C5} ' + (tr.dates || t('datesTBD'));
   document.getElementById('tripShip').textContent  = '\u{1F6F3} ' + (tr.ship  || t('shipTBD'));
   document.getElementById('tripPort').textContent  = '\u2693 ' + (tr.port  || t('portTBD'));
+  const sd = document.getElementById('statusDisplay');
+  if (tr.status) {
+    sd.textContent = tr.status;
+    sd.classList.remove('empty');
+  } else {
+    sd.textContent = 'No status set';
+    sd.classList.add('empty');
+  }
+}
+
+function openStatusModal() {
+  document.getElementById('mStatusText').value = state.trip.status || '';
+  openModal('statusModal');
+  setTimeout(() => document.getElementById('mStatusText').focus(), 80);
+}
+
+function applyStatusPreset(text) {
+  const inp = document.getElementById('mStatusText');
+  inp.value = text;
+  inp.focus();
+  // move cursor to end so user can type the destination after "Docked @ "
+  inp.setSelectionRange(inp.value.length, inp.value.length);
+}
+
+function saveStatus() {
+  state.trip.status = document.getElementById('mStatusText').value.trim();
+  save(); renderTrip();
+  closeModal('statusModal');
 }
 
 function openTripModal() {
@@ -735,6 +795,7 @@ function saveTripInfo() {
     ship:    document.getElementById('mTripShip').value.trim(),
     port:    document.getElementById('mTripPort').value.trim(),
     pin:     newPin,
+    status:  state.trip.status || '',
   };
   if (!newPin) sessionUnlocked = true;
   save(); renderTrip(); updateLockState(); closeModal('tripModal');
@@ -747,6 +808,8 @@ function updateLockState() {
   const editable = !hasPin || sessionUnlocked;
   const adminBtns = document.getElementById('adminBtns');
   if (adminBtns) adminBtns.style.display = editable ? 'flex' : 'none';
+  const statusEditBtn = document.getElementById('statusEditBtn');
+  if (statusEditBtn) statusEditBtn.style.display = editable ? '' : 'none';
   document.querySelectorAll('.add-btn, .edit-btn, .del-btn, .sort-btns').forEach(el => {
     el.style.display = editable ? '' : 'none';
   });
@@ -796,6 +859,8 @@ async function doneEditing() {
   btn.disabled = true;
   btn.innerHTML = 'Publishing&#x2026;';
   await publishBoard();
+  btn.disabled = false;
+  btn.innerHTML = '&#x2705; Done';
   sessionUnlocked = false;
   updateLockState();
 }
