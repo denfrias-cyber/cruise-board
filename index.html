@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>&#x1F6F3; Cruise Group Board</title>
-  <meta property="og:title" content="Group Cruise 2025 v3770" id="ogTitle" />
+  <meta property="og:title" content="Group Cruise 2025" id="ogTitle" />
   <meta property="og:description" content="Flights &#183; Itinerary &#183; Rooms &#183; Packing" id="ogDesc" />
   <meta property="og:image" content="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f6f3.png" />
   <meta property="og:url" content="https://denfrias-cyber.github.io/cruise-board/" />
@@ -471,7 +471,7 @@
 <div id="publishToast" style="display:none;position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;border-radius:999px;padding:.6rem 1.25rem;font-size:.88rem;font-weight:600;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.3);white-space:nowrap;"></div>
 
 <!-- PUBLISHED STATE &#8212; updated on each Publish -->
-<script id="publishedState" type="application/json">{"trip":{"name":"Group Cruise 2025 v3770","tagline":"Our Adventure Together","dates":"","ship":"","port":"","pin":"1234"},"flights":[{"id":"1h0msbc","pax":"Dennis & Maria","route":"LAX → MIA","date":"","flightNum":"","conf":"","status":"confirmed","notes":""}],"days":[{"id":"ao8xt1m","label":"Day 1 · Jul 12","port":"Miami (Embarkation)","events":[]}],"notes":[{"id":"wzunkhg","author":"Dennis","text":"Meet at Gate B4 at 7:30 AM!","ts":"May 12 4:08 PM"}],"pack":[{"id":"oaoik20","text":"Sunscreen SPF 50+","checked":false}],"contacts":[{"id":"6nn9kz5","name":"Maria Garcia","role":"Travel Organizer","info":"(310) 555-0199"}],"rooms":[{"id":"1dbr0qf","num":"8542","deck":"Deck 8","guests":"Dennis & Maria","type":"","notes":""}],"sectionOrder":["itinerary","flights","announcements","packing","contacts","rooms"]}</script>
+<script id="publishedState" type="application/json">{"trip":{"name":"Group Cruise 2025","tagline":"Our Adventure Together","dates":"","ship":"","port":"","pin":""},"flights":[],"days":[],"notes":[],"pack":[],"contacts":[],"rooms":[],"sectionOrder":["flights","itinerary","announcements","packing","contacts","rooms"]}</script>
 
 <script>
 // &#x2500;&#x2500; TRANSLATIONS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
@@ -596,13 +596,25 @@ let state = {
   sectionOrder: ['flights','itinerary','announcements','packing','contacts','rooms'],
 };
 
+const RAW_DATA = 'https://raw.githubusercontent.com/denfrias-cyber/cruise-board/main/data.json';
+
 function save() { localStorage.setItem(KEY, JSON.stringify(state)); }
 function load() {
   const raw = localStorage.getItem(KEY);
   if (raw) { state = JSON.parse(raw); return; }
-  // Fall back to baked-in published state so guests see the real data
   const published = document.getElementById('publishedState');
   if (published) { try { state = JSON.parse(published.textContent); } catch(e) {} }
+}
+async function loadRemote() {
+  try {
+    const res = await fetch(RAW_DATA + '?t=' + Date.now(), { cache: 'no-store' });
+    if (!res.ok) return;
+    const remote = await res.json();
+    if (!remote || !remote.trip) return;
+    state = remote;
+    save();
+    applySectionOrder(); renderAll(); updateSortBtns(); updateLockState();
+  } catch(e) {}
 }
 function uid()  { return Math.random().toString(36).slice(2,9); }
 
@@ -615,32 +627,53 @@ function showToast(msg, duration) {
   t._timer = setTimeout(() => { t.style.display = 'none'; }, duration || 3000);
 }
 
+function stateForPublish() {
+  return { ...state, trip: { ...state.trip, pin: state.trip.pin || '' } };
+}
+function toB64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+
 async function publishBoard() {
   const token = localStorage.getItem('cruise_gh_token');
   if (!token) return;
   showToast('Publishing&#8230;', 30000);
   try {
-    const api = 'https://api.github.com/repos/denfrias-cyber/cruise-board/contents/index.html';
     const headers = { Authorization: 'token ' + token, 'Content-Type': 'application/json' };
-    const getRes = await fetch(api, { headers });
-    if (!getRes.ok) throw new Error('GitHub error. Re-enter token in Edit Trip Info.');
-    const { sha, content: b64 } = await getRes.json();
+    const base = 'https://api.github.com/repos/denfrias-cyber/cruise-board/contents/';
+    const pub = stateForPublish();
+    const stateJson = JSON.stringify(pub);
+
+    // 1. Push data.json &#8212; fast, bypasses CDN cache on next load
+    const dataApi = base + 'data.json';
+    const dataGet = await fetch(dataApi, { headers });
+    const dataSha = dataGet.ok ? (await dataGet.json()).sha : undefined;
+    const dataRes = await fetch(dataApi, {
+      method: 'PUT', headers,
+      body: JSON.stringify({ message: 'Publish data', content: toB64(stateJson), sha: dataSha })
+    });
+    if (!dataRes.ok) throw new Error('data.json push failed: ' + (await dataRes.json()).message);
+
+    // 2. Also update index.html publishedState for new visitors
+    const htmlApi = base + 'index.html';
+    const htmlGet = await fetch(htmlApi, { headers });
+    if (!htmlGet.ok) throw new Error('GitHub error. Check token in Edit Trip Info.');
+    const { sha: htmlSha, content: b64 } = await htmlGet.json();
     const bytes = Uint8Array.from(atob(b64.replace(/\n/g, '')), c => c.charCodeAt(0));
     let html = new TextDecoder().decode(bytes);
-    const stateJson = JSON.stringify({ ...state, trip: { ...state.trip, pin: state.trip.pin || '' } });
     html = html.replace(/(<script id="publishedState"[^>]*>)[\s\S]*?(<\/script>)/, '$1' + stateJson + '$2');
     html = html.replace(/(<meta property="og:title"[^>]*content=")[^"]*(")/,
-      '$1' + (state.trip.name || 'Group Cruise 2025') + '$2');
-    const bytes2 = new TextEncoder().encode(html);
-    let binary = '';
-    for (let i = 0; i < bytes2.length; i++) binary += String.fromCharCode(bytes2[i]);
-    const newB64 = btoa(binary);
-    const putRes = await fetch(api, {
+      '$1' + (pub.trip.name || 'Group Cruise 2025') + '$2');
+    const htmlRes = await fetch(htmlApi, {
       method: 'PUT', headers,
-      body: JSON.stringify({ message: 'Publish board update', content: newB64, sha })
+      body: JSON.stringify({ message: 'Publish board update', content: toB64(html), sha: htmlSha })
     });
-    if (!putRes.ok) throw new Error('Push failed: ' + (await putRes.json()).message);
-    showToast('&#9989; Published! Group link ready.', 6000);
+    if (!htmlRes.ok) throw new Error('index.html push failed: ' + (await htmlRes.json()).message);
+
+    showToast('&#9989; Published! Updates live now.', 6000);
   } catch(e) {
     showToast('&#10060; ' + e.message, 5000);
   }
@@ -654,6 +687,7 @@ let sessionUnlocked = false;
 
 // &#x2500;&#x2500; INIT &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
 load(); applySectionOrder(); applyLang(); renderAll(); updateSortBtns(); updateLockState();
+loadRemote();
 
 function renderAll() {
   renderTrip(); renderFlights(); renderItinerary();
