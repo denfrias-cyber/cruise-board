@@ -44,11 +44,9 @@
     .hero-btns { display: flex; gap: .6rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
     #editTripBtn { background: rgba(255,255,255,.25); border: 1px solid rgba(255,255,255,.5); color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; }
     #editTripBtn:hover { background: rgba(255,255,255,.4); }
-    #saveFileBtn { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.4); color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; transition: background .15s; }
-    #saveFileBtn:hover { background: rgba(255,255,255,.3); }
-    #publishBtn { background: var(--coral); border: none; color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; font-weight: 700; transition: background .15s; }
-    #publishBtn:hover { background: #e06030; }
-    #publishBtn:disabled { opacity: .6; cursor: default; }
+    #doneBtn { background: #22c55e; border: none; color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; font-weight: 700; transition: background .15s; }
+    #doneBtn:hover { background: #16a34a; }
+    #doneBtn:disabled { opacity: .6; cursor: default; }
     #lockBtn { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.4); color: #fff; padding: .4rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: .85rem; transition: background .15s; }
     #lockBtn:hover { background: rgba(255,255,255,.3); }
     #lockBtn.unlocked { background: rgba(255,255,255,.3); border-color: rgba(255,255,255,.7); }
@@ -169,7 +167,7 @@
 
 <!-- HERO -->
 <div class="hero">
-  <span class="wave">&#x1F6A2;</span>
+  <span class="wave" id="waveIcon" onclick="handleWaveTap()">&#x1F6A2;</span>
   <h1 id="tripName">Group Cruise 2025</h1>
   <p class="subtitle" id="tripTagline">Our Adventure Together</p>
   <div class="hero-meta">
@@ -177,11 +175,11 @@
     <span id="tripShip">&#x1F6F3; Ship TBD</span>
     <span id="tripPort">&#x2693; Port TBD</span>
   </div>
-  <div class="hero-btns">
-    <button id="lockBtn" onclick="toggleLock()">&#x1F512; Unlock</button>
+  <div class="hero-btns" id="adminBtns" style="display:none">
     <button id="editTripBtn" onclick="openTripModal()">&#x270F;&#xFE0F; Edit Trip Info</button>
-    <button id="saveFileBtn" onclick="saveToFile()">&#x1F4BE; Save</button>
-    <button id="publishBtn" onclick="publishBoard()" style="display:none">&#x1F680; Publish</button>
+    <button id="doneBtn" onclick="doneEditing()">&#x2705; Done</button>
+  </div>
+  <div class="hero-btns">
     <div class="lang-toggle">
       <button id="btnEN" class="active" onclick="setLang('en')">EN</button>
       <button id="btnTL" onclick="setLang('tl')">TL</button>
@@ -607,18 +605,6 @@ function load() {
   if (published) { try { state = JSON.parse(published.textContent); } catch(e) {} }
 }
 function uid()  { return Math.random().toString(36).slice(2,9); }
-function saveToFile() {
-  const name = (state.trip.name || 'cruise-board').replace(/\s+/g, '-').toLowerCase();
-  const blob = new Blob([JSON.stringify(state, null, 2)], {type: 'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = name + '.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
-  const btn = document.getElementById('saveFileBtn');
-  btn.innerHTML = '&#x2713; Saved!';
-  setTimeout(() => { btn.innerHTML = '&#x1F4BE; Save'; }, 2000);
-}
 
 // &#9472;&#9472; PUBLISH &#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;
 function showToast(msg, duration) {
@@ -632,15 +618,12 @@ function showToast(msg, duration) {
 async function publishBoard() {
   const token = localStorage.getItem('cruise_gh_token');
   if (!token) return;
-  const btn = document.getElementById('publishBtn');
-  btn.disabled = true;
-  btn.innerHTML = 'Publishing&#x2026;';
-  showToast('Publishing&#x2026;', 30000);
+  showToast('Publishing&#8230;', 30000);
   try {
     const api = 'https://api.github.com/repos/denfrias-cyber/cruise-board/contents/index.html';
     const headers = { Authorization: 'token ' + token, 'Content-Type': 'application/json' };
     const getRes = await fetch(api, { headers });
-    if (!getRes.ok) throw new Error('GitHub error. Re-enter your token in Edit Trip Info.');
+    if (!getRes.ok) throw new Error('GitHub error. Re-enter token in Edit Trip Info.');
     const { sha, content: b64 } = await getRes.json();
     const bytes = Uint8Array.from(atob(b64), c => c.charCodeAt(0));
     let html = new TextDecoder().decode(bytes);
@@ -654,12 +637,8 @@ async function publishBoard() {
       body: JSON.stringify({ message: 'Publish board update', content: newB64, sha })
     });
     if (!putRes.ok) throw new Error('Push failed: ' + (await putRes.json()).message);
-    btn.innerHTML = '&#x2705; Published!';
-    showToast('&#9989; Published! Link: https://denfrias-cyber.github.io/cruise-board/', 8000);
-    setTimeout(() => { btn.disabled = false; btn.innerHTML = '&#x1F680; Publish'; }, 4000);
+    showToast('&#9989; Published! Group link ready.', 6000);
   } catch(e) {
-    btn.disabled = false;
-    btn.innerHTML = '&#x1F680; Publish';
     showToast('&#10060; ' + e.message, 5000);
   }
 }
@@ -760,27 +739,23 @@ function updateLockState() {
   const hasPin = !!state.trip.pin;
   if (!hasPin) sessionUnlocked = true;
   const editable = !hasPin || sessionUnlocked;
-  const lockBtn = document.getElementById('lockBtn');
-  if (lockBtn) {
-    lockBtn.style.display = hasPin ? '' : 'none';
-    lockBtn.innerHTML = editable ? '\u{1F513} Lock' : '\u{1F512} Unlock';
-    lockBtn.classList.toggle('unlocked', editable);
-  }
-  const editTripBtn = document.getElementById('editTripBtn');
-  if (editTripBtn) editTripBtn.style.display = editable ? '' : 'none';
-  const publishBtn = document.getElementById('publishBtn');
-  if (publishBtn) publishBtn.style.display = (editable && !!localStorage.getItem('cruise_gh_token')) ? '' : 'none';
+  const adminBtns = document.getElementById('adminBtns');
+  if (adminBtns) adminBtns.style.display = editable ? 'flex' : 'none';
   document.querySelectorAll('.add-btn, .edit-btn, .del-btn, .sort-btns').forEach(el => {
     el.style.display = editable ? '' : 'none';
   });
 }
 
-function toggleLock() {
-  if (!state.trip.pin) return;
-  if (sessionUnlocked) {
-    sessionUnlocked = false;
-    updateLockState();
-  } else {
+// Triple-tap the ship icon to open admin unlock
+let _waveTaps = 0, _waveTapTimer;
+function handleWaveTap() {
+  _waveTaps++;
+  clearTimeout(_waveTapTimer);
+  _waveTapTimer = setTimeout(() => { _waveTaps = 0; }, 600);
+  if (_waveTaps >= 3) {
+    _waveTaps = 0;
+    if (sessionUnlocked) return;
+    if (!state.trip.pin) { sessionUnlocked = true; updateLockState(); return; }
     document.getElementById('mPinInput').value = '';
     document.getElementById('pinError').style.display = 'none';
     openModal('pinModal');
@@ -798,6 +773,20 @@ function submitPin() {
     document.getElementById('pinError').style.display = 'block';
     document.getElementById('mPinInput').select();
   }
+}
+
+async function doneEditing() {
+  const btn = document.getElementById('doneBtn');
+  const token = localStorage.getItem('cruise_gh_token');
+  if (token) {
+    btn.disabled = true;
+    btn.innerHTML = 'Publishing&#x2026;';
+    await publishBoard();
+  }
+  sessionUnlocked = false;
+  updateLockState();
+  btn.disabled = false;
+  btn.innerHTML = '&#x2705; Done';
 }
 
 // &#x2500;&#x2500; FLIGHTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
