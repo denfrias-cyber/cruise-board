@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>&#x1F6F3; Cruise Group Board</title>
   <meta property="og:title" content="Alaska Cruise 2026" id="ogTitle" />
-  <meta property="og:description" content="Flights · Itinerary · Rooms · Packing" id="ogDesc" />
+  <meta property="og:description" content="Flights · Itinerary · Rooms · Contacts" id="ogDesc" />
   <meta property="og:image" content="https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/72x72/1f6f3.png" />
   <meta property="og:url" content="https://denfrias-cyber.github.io/cruise-board/" />
   <meta property="og:type" content="website" />
@@ -120,12 +120,6 @@
     .note-time   { font-size: .72rem; color: var(--gray); }
 
     /* &#x2500;&#x2500; PACKING &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
-    .pack-list { padding: .5rem .75rem .75rem; display: flex; flex-direction: column; gap: .3rem; }
-    .pack-item { display: flex; align-items: center; gap: .6rem; font-size: .87rem; padding: .3rem .2rem; border-bottom: 1px dashed #e0f2fe; }
-    .pack-item:last-child { border-bottom: none; }
-    .pack-item input[type="checkbox"] { width: 1.1rem; height: 1.1rem; accent-color: var(--ocean); flex-shrink: 0; }
-    .pack-item label { flex: 1; cursor: pointer; }
-    .pack-item.checked label { text-decoration: line-through; color: var(--gray); }
 
     /* &#x2500;&#x2500; CONTACTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
     .contacts-grid { padding: .5rem .75rem .75rem; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
@@ -241,22 +235,6 @@
   </div>
 
   <!-- PACKING CHECKLIST -->
-  <div class="card" data-section="packing">
-    <div class="card-header">
-      <div class="card-title"><span class="icon">&#x1F9F3;</span> <span data-i18n="packing">Shared Packing Checklist</span></div>
-      <div style="display:flex;gap:.5rem;align-items:center">
-        <div class="sort-btns">
-          <button class="sort-btn sort-btn-up" onclick="moveSection('packing','up')">&#x25B2;</button>
-          <button class="sort-btn sort-btn-down" onclick="moveSection('packing','down')">&#x25BC;</button>
-        </div>
-        <button class="add-btn" onclick="openPackModal()" data-i18n="addItem">+ Add Item</button>
-      </div>
-    </div>
-    <div class="pack-list" id="packList">
-      <div class="empty"><span class="big">&#x1F392;</span><span data-i18n="emptyPack">Nothing added yet.</span></div>
-    </div>
-  </div>
-
   <!-- CONTACTS -->
   <div class="card" data-section="contacts">
     <div class="card-header">
@@ -416,19 +394,6 @@
   </div>
 </div>
 
-<!-- PACK MODAL -->
-<div class="modal-overlay" id="packModal">
-  <div class="modal">
-    <h3 id="packModalTitle">&#x1F9F3; Add Packing Item</h3>
-    <label data-i18n="lItem">Item</label>
-    <input id="mPackItem" placeholder="e.g. Sunscreen SPF 50+" oninput="scheduleAutoSave()" />
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('packModal')" data-i18n="cancel">Cancel</button>
-      <button class="btn-primary" id="packSaveBtn" onclick="savePackItem()">Add</button>
-    </div>
-  </div>
-</div>
-
 <!-- CONTACT MODAL -->
 <div class="modal-overlay" id="contactModal">
   <div class="modal">
@@ -471,7 +436,7 @@
 <div id="publishToast" style="display:none;position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:#1e293b;color:#fff;border-radius:999px;padding:.6rem 1.25rem;font-size:.88rem;font-weight:600;z-index:999;box-shadow:0 4px 20px rgba(0,0,0,.3);white-space:nowrap;"></div>
 
 <!-- PUBLISHED STATE &#8212; updated on each Publish -->
-<script id="publishedState" type="application/json">{"trip":{"name":"Alaska Cruise 2026","tagline":"Our Adventure Together","dates":"May 29 - June 5, 2026","ship":"Royal Caribbean Voyager of the Seas","port":"Port of Seattle","pin":"1234"},"flights":[{"id":"1h0msbc","pax":"Dennis, Josephine, Joseph, Derrick & Berlinda Frias","route":"LAX → SEA","date":"May 29 LAX 7:59am - 10:55am SEA","flightNum":"Delta Airlines 2980","conf":"","status":"confirmed","notes":""}],"days":[{"id":"ao8xt1m","label":"Day 1 · Jul 12","port":"Miami (Embarkation)","events":[]}],"notes":[{"id":"wzunkhg","author":"Dennis","text":"Welcome Family to the Alaska Cruise 2026!","ts":"May 12 4:08 PM"}],"pack":[{"id":"oaoik20","text":"Sunscreen SPF 50+","checked":false}],"contacts":[{"id":"6nn9kz5","name":"Maria Garcia","role":"Travel Organizer","info":"(310) 555-0199"}],"rooms":[{"id":"1dbr0qf","num":"8542","deck":"Deck 8","guests":"Dennis & Maria","type":"","notes":""}],"sectionOrder":["announcements","flights","rooms","itinerary","contacts","packing"]}</script>
+<script id="publishedState" type="application/json">{"trip":{"name":"Alaska Cruise 2026","tagline":"Our Adventure Together","dates":"May 29 - June 5, 2026","ship":"Royal Caribbean Voyager of the Seas","port":"Port of Seattle","pin":"1234"},"flights":[{"id":"1h0msbc","pax":"Dennis, Josephine, Joseph, Derrick & Berlinda Frias","route":"LAX → SEA","date":"May 29 LAX 7:59am - 10:55am SEA","flightNum":"Delta Airlines 2980","conf":"","status":"confirmed","notes":""}],"days":[{"id":"ao8xt1m","label":"Day 1 · Jul 12","port":"Miami (Embarkation)","events":[]}],"notes":[{"id":"wzunkhg","author":"Dennis","text":"Welcome Family to the Alaska Cruise 2026!","ts":"May 12 4:08 PM"}],"contacts":[{"id":"6nn9kz5","name":"Maria Garcia","role":"Travel Organizer","info":"(310) 555-0199"}],"rooms":[{"id":"1dbr0qf","num":"8542","deck":"Deck 8","guests":"Dennis & Maria","type":"","notes":""}],"sectionOrder":["announcements","flights","itinerary","rooms","contacts"]}</script>
 
 <script>
 // &#x2500;&#x2500; TRANSLATIONS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
@@ -480,7 +445,7 @@ const LANG = {
     editTrip: '&#x270F;&#xFE0F; Edit Trip Info',
     datesTBD: 'Dates TBD', shipTBD: 'Ship TBD', portTBD: 'Port TBD',
     flights: 'Flights', itinerary: 'Day-by-Day Itinerary',
-    announcements: 'Announcements & Notes', packing: 'Shared Packing Checklist',
+    announcements: 'Announcements & Notes',
     contacts: 'Group Contacts', rooms: 'Room / Cabin Info',
     addFlight: '+ Add Flight', addDay: '+ Add Day', post: '+ Post',
     addItem: '+ Add Item', addContact: '+ Add', addRoom: '+ Add Room',
@@ -489,7 +454,6 @@ const LANG = {
     dayTitle: '&#x1F5D3; Add Itinerary Day', dayEditTitle: '&#x1F5D3; Edit Day',
     eventTitle: '&#x23F0; Add Event', eventEditTitle: '&#x23F0; Edit Event',
     noteTitle: '&#x1F4E3; Post Announcement', noteEditTitle: '&#x1F4E3; Edit Announcement',
-    packTitle: '&#x1F9F3; Add Packing Item', packEditTitle: '&#x1F9F3; Edit Item',
     contactTitle: '&#x1F4C7; Add Contact', contactEditTitle: '&#x1F4C7; Edit Contact',
     roomTitle: '&#x1F6CF; Add Cabin / Room', roomEditTitle: '&#x1F6CF; Edit Cabin',
     lTripName: 'Trip Name', lTagline: 'Tagline', lDates: 'Dates',
@@ -513,7 +477,7 @@ const LANG = {
     editDay: '&#x270F; Edit Day', addEvent: '+ Add Event', deleteDay: 'Delete Day',
     confirmDeleteDay: 'Remove this day?',
     emptyFlights: 'No flights added yet.', emptyDays: 'No days added yet.',
-    emptyNotes: 'No posts yet.', emptyPack: 'Nothing added yet.',
+    emptyNotes: 'No posts yet.',
     emptyContacts: 'No contacts added.', emptyRooms: 'No cabins added yet.',
     emptyEvents: 'No events &#x2014; add one below.',
     badgeConfirmed: 'confirmed', badgePending: 'pending', badgeCancelled: 'cancelled',
@@ -523,7 +487,7 @@ const LANG = {
     editTrip: '&#x270F;&#xFE0F; I-edit ang Info ng Biyahe',
     datesTBD: 'Petsa: Hindi Pa Tiyak', shipTBD: 'Barko: Hindi Pa Tiyak', portTBD: 'Daungan: Hindi Pa Tiyak',
     flights: 'Mga Lipad', itinerary: 'Araw-araw na Itineraryo',
-    announcements: 'Mga Anunsyo at Tala', packing: 'Shared na Listahan ng Dala',
+    announcements: 'Mga Anunsyo at Tala',
     contacts: 'Mga Kontak ng Grupo', rooms: 'Impormasyon ng Silid / Cabin',
     addFlight: '+ Magdagdag ng Lipad', addDay: '+ Magdagdag ng Araw', post: '+ Mag-post',
     addItem: '+ Magdagdag ng Aytem', addContact: '+ Magdagdag', addRoom: '+ Magdagdag ng Silid',
@@ -532,7 +496,6 @@ const LANG = {
     dayTitle: '&#x1F5D3; Magdagdag ng Araw', dayEditTitle: '&#x1F5D3; I-edit ang Araw',
     eventTitle: '&#x23F0; Magdagdag ng Kaganapan', eventEditTitle: '&#x23F0; I-edit ang Kaganapan',
     noteTitle: '&#x1F4E3; Mag-post ng Anunsyo', noteEditTitle: '&#x1F4E3; I-edit ang Anunsyo',
-    packTitle: '&#x1F9F3; Magdagdag ng Aytem', packEditTitle: '&#x1F9F3; I-edit ang Aytem',
     contactTitle: '&#x1F4C7; Magdagdag ng Kontak', contactEditTitle: '&#x1F4C7; I-edit ang Kontak',
     roomTitle: '&#x1F6CF; Magdagdag ng Cabin', roomEditTitle: '&#x1F6CF; I-edit ang Cabin',
     lTripName: 'Pangalan ng Biyahe', lTagline: 'Tagline', lDates: 'Mga Petsa',
@@ -556,7 +519,7 @@ const LANG = {
     editDay: '&#x270F; I-edit ang Araw', addEvent: '+ Magdagdag ng Kaganapan', deleteDay: 'Burahin ang Araw',
     confirmDeleteDay: 'Alisin ang araw na ito?',
     emptyFlights: 'Wala pang lipad na naidagdag.', emptyDays: 'Wala pang araw na naidagdag.',
-    emptyNotes: 'Wala pang mga post.', emptyPack: 'Wala pang naidagdag.',
+    emptyNotes: 'Wala pang mga post.',
     emptyContacts: 'Wala pang kontak na naidagdag.', emptyRooms: 'Wala pang cabin na naidagdag.',
     emptyEvents: 'Walang mga kaganapan &#x2014; magdagdag sa ibaba.',
     badgeConfirmed: 'nakumpirma', badgePending: 'nakabinbin', badgeCancelled: 'nakansela',
@@ -577,6 +540,7 @@ function setLang(l) {
   document.getElementById('btnTL').classList.toggle('active', lang === 'tl');
   applyLang();
   renderAll();
+  updateLockState();
 }
 
 function applyLang() {
@@ -592,8 +556,8 @@ function applyLang() {
 const KEY = 'cruiseBoard_v1';
 let state = {
   trip: { name: 'Group Cruise 2025', tagline: 'Our Adventure Together', dates: '', ship: '', port: '', pin: '' },
-  flights: [], days: [], notes: [], pack: [], contacts: [], rooms: [],
-  sectionOrder: ['flights','itinerary','announcements','packing','contacts','rooms'],
+  flights: [], days: [], notes: [], contacts: [], rooms: [],
+  sectionOrder: ['announcements','flights','itinerary','rooms','contacts'],
 };
 
 const RAW_DATA = 'https://raw.githubusercontent.com/denfrias-cyber/cruise-board/main/data.json';
@@ -632,7 +596,7 @@ function stateForPublish() {
   const shell = document.querySelector('.shell');
   const liveOrder = shell
     ? Array.from(shell.querySelectorAll('[data-section]')).map(c => c.dataset.section)
-    : (state.sectionOrder || ['flights','itinerary','announcements','packing','contacts','rooms']);
+    : (state.sectionOrder || ['announcements','flights','itinerary','rooms','contacts']);
   return { ...state, trip: { ...state.trip, pin: state.trip.pin || '' }, sectionOrder: liveOrder };
 }
 function toB64(str) {
@@ -686,7 +650,7 @@ async function publishBoard() {
 
 // editing context: null = add mode, string id = edit mode
 let editingFlight = null, editingDay = null, editingEvent = null;
-let editingNote = null, editingPack = null, editingContact = null, editingRoom = null;
+let editingNote = null, editingContact = null, editingRoom = null;
 let activeDay = null;
 let sessionUnlocked = false;
 
@@ -696,13 +660,13 @@ loadRemote();
 
 function renderAll() {
   renderTrip(); renderFlights(); renderItinerary();
-  renderNotes(); renderPack(); renderContacts(); renderRooms();
+  renderNotes(); renderContacts(); renderRooms();
 }
 
 function applySectionOrder() {
   const shell = document.querySelector('.shell');
   if (!shell) return;
-  const order = state.sectionOrder || ['flights','itinerary','announcements','packing','contacts','rooms'];
+  const order = state.sectionOrder || ['announcements','flights','itinerary','rooms','contacts'];
   order.forEach(id => {
     const card = shell.querySelector('[data-section="' + id + '"]');
     if (card) shell.appendChild(card);
@@ -1120,65 +1084,6 @@ function deleteNote(id) {
   save(); renderNotes();
 }
 
-// &#x2500;&#x2500; PACK &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
-function renderPack() {
-  const el = document.getElementById('packList');
-  if (!state.pack.length) {
-    el.innerHTML = `<div class="empty"><span class="big">&#x1F392;</span>${t('emptyPack')}</div>`;
-    return;
-  }
-  el.innerHTML = state.pack.map(p => `
-    <div class="pack-item ${p.checked ? 'checked' : ''}">
-      <input type="checkbox" id="pk_${p.id}" ${p.checked ? 'checked' : ''} onchange="togglePack('${p.id}',this.checked)" />
-      <label for="pk_${p.id}">${p.text}</label>
-      <button class="edit-btn" onclick="openPackModal('${p.id}')" title="Edit">&#x270F; Edit</button>
-      <span class="event-del" onclick="deletePack('${p.id}')">&#x2715;</span>
-    </div>`).join('');
-}
-
-function openPackModal(id) {
-  editingPack = id || null;
-  const titleEl = document.getElementById('packModalTitle');
-  const saveBtn = document.getElementById('packSaveBtn');
-  if (id) {
-    const p = state.pack.find(x => x.id === id);
-    if (!p) return;
-    document.getElementById('mPackItem').value = p.text || '';
-    titleEl.innerHTML = t('packEditTitle');
-    saveBtn.innerHTML = t('editBtn');
-  } else {
-    document.getElementById('mPackItem').value = '';
-    titleEl.innerHTML = t('packTitle');
-    saveBtn.innerHTML = t('addBtn');
-  }
-  openModal('packModal');
-}
-
-function savePackItem(keepOpen) {
-  const text = document.getElementById('mPackItem').value.trim();
-  if (!text) return;
-  if (editingPack) {
-    const i = state.pack.findIndex(x => x.id === editingPack);
-    if (i > -1) state.pack[i].text = text;
-    if (!keepOpen) editingPack = null;
-  } else {
-    state.pack.push({ id: uid(), text, checked: false });
-  }
-  save(); renderPack();
-  if (!keepOpen) closeModal('packModal');
-}
-
-function togglePack(id, val) {
-  const item = state.pack.find(p => p.id === id);
-  if (item) item.checked = val;
-  save(); renderPack();
-}
-
-function deletePack(id) {
-  state.pack = state.pack.filter(p => p.id !== id);
-  save(); renderPack();
-}
-
 // &#x2500;&#x2500; CONTACTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
 function renderContacts() {
   const el = document.getElementById('contactsGrid');
@@ -1317,7 +1222,6 @@ const _autoSaveFnMap = {
   dayModal:     () => { if (editingDay)     saveDay(true); },
   eventModal:   () => { if (editingEvent)   saveEvent(true); },
   noteModal:    () => { if (editingNote)    saveNote(true); },
-  packModal:    () => { if (editingPack)    savePackItem(true); },
   contactModal: () => { if (editingContact) saveContact(true); },
   roomModal:    () => { if (editingRoom)    saveRoom(true); },
 };
