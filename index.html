@@ -629,7 +629,11 @@ function showToast(msg, duration) {
 }
 
 function stateForPublish() {
-  return { ...state, trip: { ...state.trip, pin: state.trip.pin || '' } };
+  const shell = document.querySelector('.shell');
+  const liveOrder = shell
+    ? Array.from(shell.querySelectorAll('[data-section]')).map(c => c.dataset.section)
+    : (state.sectionOrder || ['flights','itinerary','announcements','packing','contacts','rooms']);
+  return { ...state, trip: { ...state.trip, pin: state.trip.pin || '' }, sectionOrder: liveOrder };
 }
 function toB64(str) {
   const bytes = new TextEncoder().encode(str);
