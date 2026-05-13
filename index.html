@@ -132,12 +132,12 @@
     /* &#x2500;&#x2500; MODALS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 100; align-items: flex-end; justify-content: center; }
     .modal-overlay.active { display: flex; }
-    .modal { background: #fff; border-radius: 1.4rem 1.4rem 0 0; padding: 1.5rem 1.25rem; width: 100%; max-width: 600px; max-height: 85vh; overflow-y: auto; }
+    .modal { background: #fff; border-radius: 1.4rem 1.4rem 0 0; padding: 1.5rem 1.25rem; width: 100%; max-width: 600px; max-height: 85vh; max-height: 85dvh; overflow-y: auto; }
     .modal h3 { font-size: 1.1rem; font-weight: 700; color: var(--deep); margin-bottom: 1rem; }
     .modal label { font-size: .82rem; font-weight: 600; color: var(--gray); display: block; margin-bottom: .25rem; }
     .modal input, .modal select, .modal textarea { width: 100%; border: 1px solid #d1d5db; border-radius: .6rem; padding: .55rem .75rem; font-size: .92rem; margin-bottom: .75rem; font-family: inherit; color: var(--text); }
     .modal input:focus, .modal select:focus, .modal textarea:focus { outline: none; border-color: var(--ocean); }
-    .modal-actions { position: sticky; bottom: 0; background: #fff; display: flex; gap: .75rem; margin: .25rem -1.25rem -1.5rem; padding: .75rem 1.25rem 1.25rem; border-top: 1px solid var(--border); }
+    .modal-actions { position: sticky; bottom: 0; background: #fff; display: flex; gap: .75rem; margin: .25rem -1.25rem -1.5rem; padding: .75rem 1.25rem calc(1.25rem + env(safe-area-inset-bottom, 0px)); border-top: 1px solid var(--border); }
     .btn-primary { flex: 1; background: var(--ocean); color: #fff; border: none; border-radius: .75rem; padding: .7rem; font-size: .95rem; font-weight: 700; cursor: pointer; }
     .btn-primary:hover { background: var(--deep); }
     .btn-cancel { flex: 1; background: #f1f5f9; color: var(--gray); border: none; border-radius: .75rem; padding: .7rem; font-size: .95rem; font-weight: 700; cursor: pointer; }
@@ -424,7 +424,7 @@
     <label data-i18n="lRoomType">Room Type / Bed Config</label>
     <input id="mRoomType" placeholder="e.g. Balcony &#xB7; King &#xB7; Sleeps 2" oninput="scheduleAutoSave()" />
     <label data-i18n="lNotes">Notes</label>
-    <input id="mRoomNotes" placeholder="e.g. Connecting to cabin 8544, safe code: 1234" oninput="scheduleAutoSave()" />
+    <input id="mRoomNotes" placeholder="e.g. Connecting to cabin 8544, safe code: 1234" enterkeyhint="done" oninput="scheduleAutoSave()" onkeydown="if(event.key==='Enter'){event.preventDefault();saveRoom();}" />
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('roomModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" id="roomSaveBtn" onclick="saveRoom()">Add Cabin</button>
@@ -1213,7 +1213,8 @@ function deleteRoom(id) {
 }
 
 // &#x2500;&#x2500; MODAL UTILS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
-function openModal(id)  { document.getElementById(id).classList.add('active'); }
+function openModal(id)  { document.getElementById(id).classList.add('active'); document.body.style.overflow = 'hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); document.body.style.overflow = ''; }
 
 // ── AUTO-SAVE ──────────────────────────────────────────────────────────────
 let _autoSaveTimer;
@@ -1233,10 +1234,8 @@ function scheduleAutoSave() {
   }, 600);
 }
 
-function closeModal(id) { document.getElementById(id).classList.remove('active'); }
-
 document.querySelectorAll('.modal-overlay').forEach(ov => {
-  ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('active'); });
+  ov.addEventListener('click', e => { if (e.target === ov) { ov.classList.remove('active'); document.body.style.overflow = ''; } });
 });
 </script>
 </body>
