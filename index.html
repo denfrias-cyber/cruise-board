@@ -187,11 +187,6 @@
   </div>
   <h1 id="tripName">Group Cruise 2025</h1>
   <p class="subtitle" id="tripTagline">Our Adventure Together</p>
-  <div class="hero-meta">
-    <span id="tripDates">&#x1F4C5; Dates TBD</span>
-    <span id="tripShip">&#x1F6F3; Ship TBD</span>
-    <span id="tripPort">&#x2693; Port TBD</span>
-  </div>
   <div class="countdown-bar" id="countdownBar" style="display:none">
     <span class="countdown-pill" id="countdownPill"></span>
   </div>
@@ -774,8 +769,8 @@ function renderCountdown() {
   const diff   = Math.round((target - today) / 86400000);
   if (diff < 0)  { bar.style.display = 'none'; return; }
   if (diff === 0) { pill.textContent = '\uD83C\uDF89 Embarkation Day!'; }
-  else if (diff === 1) { pill.textContent = '\u23F3 1 Day'; }
-  else { pill.textContent = '\u23F3 ' + diff + ' Days'; }
+  else if (diff === 1) { pill.textContent = '\u23F3 1 Day to Embarkation Day'; }
+  else { pill.textContent = '\u23F3 ' + diff + ' Days to Embarkation Day'; }
   bar.style.display = 'flex';
 }
 
