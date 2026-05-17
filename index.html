@@ -190,10 +190,6 @@
   <div class="countdown-bar" id="countdownBar" style="display:none">
     <span class="countdown-pill" id="countdownPill"></span>
   </div>
-  <div class="status-bar" id="statusBar" style="display:none">
-    <span class="status-pill" id="statusDisplay"></span>
-    <button class="status-edit-btn" id="statusEditBtn" onclick="openStatusModal()" style="display:none">&#x270F;&#xFE0F; Status</button>
-  </div>
   <div class="hero-btns" id="adminBtns" style="display:none">
     <button id="editTripBtn" onclick="openTripModal()">&#x270F;&#xFE0F; Edit Trip Info</button>
     <button id="doneBtn" onclick="doneEditing()">&#x2705; Done</button>
@@ -782,16 +778,6 @@ function renderTrip() {
   const elShip  = document.getElementById('tripShip');  if (elShip)  elShip.textContent  = '\u{1F6F3} ' + (tr.ship  || t('shipTBD'));
   const elPort  = document.getElementById('tripPort');  if (elPort)  elPort.textContent  = '\u2693 ' + (tr.port  || t('portTBD'));
   renderCountdown();
-  const sd  = document.getElementById('statusDisplay');
-  const bar = document.getElementById('statusBar');
-  if (tr.status) {
-    sd.textContent = tr.status;
-    sd.classList.remove('empty');
-    bar.style.display = '';
-  } else {
-    sd.textContent = '';
-    bar.style.display = document.getElementById('statusEditBtn')?.style.display !== 'none' ? '' : 'none';
-  }
 }
 setInterval(renderCountdown, 60000);
 
@@ -853,8 +839,7 @@ function updateLockState() {
   const editable = !hasPin || sessionUnlocked;
   const adminBtns = document.getElementById('adminBtns');
   if (adminBtns) adminBtns.style.display = editable ? 'flex' : 'none';
-  const statusEditBtn = document.getElementById('statusEditBtn');
-  if (statusEditBtn) statusEditBtn.style.display = editable ? '' : 'none';
+
   document.querySelectorAll('.add-btn, .edit-btn, .del-btn, .sort-btns').forEach(el => {
     el.style.display = editable ? '' : 'none';
   });
