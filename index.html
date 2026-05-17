@@ -49,6 +49,9 @@
     .status-pill.empty { opacity: .45; font-style: italic; font-weight: 400; font-size: .88rem; }
     .status-edit-btn { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.45); color: #fff; border-radius: 999px; padding: .3rem .8rem; font-size: .8rem; cursor: pointer; transition: background .15s; }
     .status-edit-btn:hover { background: rgba(255,255,255,.35); }
+    .countdown-bar { display: flex; justify-content: center; margin-top: .75rem; }
+    .countdown-pill { background: linear-gradient(90deg,#f77f50,#fbbf24); color: #fff; border-radius: 999px; padding: .5rem 1.4rem; font-size: 1rem; font-weight: 800; letter-spacing: .03em; box-shadow: 0 2px 16px rgba(247,127,80,.5); animation: pulse-glow 2s ease-in-out infinite; }
+    @keyframes pulse-glow { 0%,100%{box-shadow:0 2px 16px rgba(247,127,80,.45)} 50%{box-shadow:0 4px 28px rgba(247,127,80,.75)} }
     .status-presets { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .85rem; }
     .status-preset-btn { background: var(--light); border: 1px solid var(--border); border-radius: 999px; padding: .35rem .9rem; font-size: .83rem; cursor: pointer; color: var(--text); transition: background .15s; }
     .status-preset-btn:hover { background: var(--sky); }
@@ -188,6 +191,9 @@
     <span id="tripDates">&#x1F4C5; Dates TBD</span>
     <span id="tripShip">&#x1F6F3; Ship TBD</span>
     <span id="tripPort">&#x2693; Port TBD</span>
+  </div>
+  <div class="countdown-bar" id="countdownBar" style="display:none">
+    <span class="countdown-pill" id="countdownPill"></span>
   </div>
   <div class="status-bar" id="statusBar">
     <span class="status-pill empty" id="statusDisplay">No status set</span>
@@ -758,18 +764,19 @@ function getEmbarkDate() {
 }
 
 function renderCountdown() {
-  const datesEl = document.getElementById('tripDates');
-  if (!datesEl) return;
+  const bar  = document.getElementById('countdownBar');
+  const pill = document.getElementById('countdownPill');
+  if (!bar || !pill) return;
   const emb = getEmbarkDate();
-  const tr  = state.trip;
-  const base = '\u{1F4C5} ' + (tr.dates || t('datesTBD'));
-  if (!emb) { datesEl.textContent = base; return; }
+  if (!emb) { bar.style.display = 'none'; return; }
   const today  = new Date(); today.setHours(0,0,0,0);
   const target = new Date(emb); target.setHours(0,0,0,0);
   const diff   = Math.round((target - today) / 86400000);
-  if (diff < 0)  { datesEl.textContent = base; return; }
-  if (diff === 0) { datesEl.textContent = base + ' \u2022 \uD83C\uDF89 Today!'; return; }
-  datesEl.textContent = base + ' \u2022 \u23F3 ' + diff + 'd';
+  if (diff < 0)  { bar.style.display = 'none'; return; }
+  if (diff === 0) { pill.textContent = '\uD83C\uDF89 TODAY IS EMBARKATION DAY!'; }
+  else if (diff === 1) { pill.textContent = '\u23F3 1 DAY TO EMBARKATION!'; }
+  else { pill.textContent = '\u23F3 ' + diff + ' DAYS TO EMBARKATION'; }
+  bar.style.display = 'flex';
 }
 
 function renderTrip() {
