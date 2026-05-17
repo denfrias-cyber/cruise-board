@@ -36,7 +36,9 @@
 
     /* &#x2500;&#x2500; HERO &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
     .hero { text-align: center; padding: 2.5rem 1rem 2rem; color: var(--white); }
-    .hero .wave { font-size: 3rem; display: block; margin-bottom: .5rem; }
+    .hero-brand { display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin-bottom: .5rem; }
+    .rc-logo { height: 2.6rem; filter: brightness(0) invert(1); opacity: .88; object-fit: contain; }
+    .hero .wave { font-size: 3rem; display: block; }
     .hero h1 { font-size: 1.9rem; font-weight: 800; letter-spacing: -.5px; }
     .hero .subtitle { font-size: 1rem; opacity: .85; margin-top: .4rem; }
     .hero-meta { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1rem; }
@@ -45,6 +47,9 @@
     .status-bar { display: flex; align-items: center; justify-content: center; gap: .5rem; margin-top: .85rem; min-height: 2rem; }
     .status-pill { background: rgba(255,255,255,.22); backdrop-filter: blur(6px); border: 1.5px solid rgba(255,255,255,.55); color: #fff; border-radius: 999px; padding: .45rem 1.3rem; font-size: 1rem; font-weight: 700; letter-spacing: .01em; }
     .status-pill.empty { opacity: .45; font-style: italic; font-weight: 400; font-size: .88rem; }
+    .countdown-bar { margin-top: .7rem; display: flex; justify-content: center; }
+    .countdown-pill { background: linear-gradient(90deg,#f77f50,#fbbf24); color: #fff; border-radius: 999px; padding: .4rem 1.2rem; font-size: .9rem; font-weight: 800; letter-spacing: .02em; box-shadow: 0 2px 12px rgba(247,127,80,.4); animation: pulse-glow 2s ease-in-out infinite; }
+    @keyframes pulse-glow { 0%,100%{box-shadow:0 2px 12px rgba(247,127,80,.4)} 50%{box-shadow:0 4px 24px rgba(247,127,80,.7)} }
     .status-edit-btn { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.45); color: #fff; border-radius: 999px; padding: .3rem .8rem; font-size: .8rem; cursor: pointer; transition: background .15s; }
     .status-edit-btn:hover { background: rgba(255,255,255,.35); }
     .status-presets { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .85rem; }
@@ -109,6 +114,7 @@
     .day-header .day-port  { font-size: .8rem; opacity: .9; }
     .day-header .chevron { transition: transform .2s; }
     .day-header.open .chevron { transform: rotate(180deg); }
+    .day-times { font-size: .72rem; opacity: .85; margin-top: .15rem; letter-spacing: .01em; }
     .day-events { display: none; padding: .5rem .75rem .65rem; background: var(--white); flex-direction: column; gap: .4rem; }
     .day-events.open { display: flex; }
     .event-item { display: flex; gap: .7rem; align-items: flex-start; font-size: .85rem; padding: .35rem .1rem; border-bottom: 1px dashed #e0f2fe; }
@@ -132,10 +138,16 @@
     /* &#x2500;&#x2500; CONTACTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
     .contacts-grid { padding: .5rem .75rem .75rem; display: grid; grid-template-columns: 1fr 1fr; gap: .6rem; }
     @media (max-width: 480px) { .contacts-grid { grid-template-columns: 1fr; } }
-    .contact-card { background: var(--light); border: 1px solid var(--border); border-radius: .9rem; padding: .65rem .85rem; position: relative; }
+    .contact-card { background: var(--light); border: 1px solid var(--border); border-radius: .9rem; padding: .65rem .85rem; position: relative; cursor: pointer; transition: background .15s; }
+    .contact-card:hover { background: #e0f2fe; }
     .contact-name { font-weight: 700; font-size: .9rem; color: var(--deep); }
     .contact-role { font-size: .75rem; color: var(--gray); }
-    .contact-info { font-size: .8rem; margin-top: .25rem; color: var(--text); }
+    .contact-chevron { float: right; font-size: .7rem; color: var(--gray); margin-left: .3rem; transition: transform .2s; line-height: 1.4rem; }
+    .contact-card.expanded .contact-chevron { transform: rotate(180deg); }
+    .contact-details { display: none; margin-top: .45rem; padding-top: .4rem; border-top: 1px solid var(--border); }
+    .contact-card.expanded .contact-details { display: block; }
+    .contact-details a { color: var(--ocean); text-decoration: none; font-size: .82rem; display: block; margin-bottom: .15rem; }
+    .contact-details a:hover { text-decoration: underline; }
 
     /* &#x2500;&#x2500; MODALS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
     .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 100; align-items: flex-end; justify-content: center; }
@@ -169,13 +181,19 @@
 
 <!-- HERO -->
 <div class="hero">
-  <span class="wave" id="waveIcon" onclick="handleWaveTap()">&#x1F6A2;</span>
+  <div class="hero-brand">
+    <img class="rc-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Royal_Caribbean_International_logo.svg/280px-Royal_Caribbean_International_logo.svg.png" alt="Royal Caribbean" />
+    <span class="wave" id="waveIcon" onclick="handleWaveTap()">&#x1F6A2;</span>
+  </div>
   <h1 id="tripName">Group Cruise 2025</h1>
   <p class="subtitle" id="tripTagline">Our Adventure Together</p>
   <div class="hero-meta">
     <span id="tripDates">&#x1F4C5; Dates TBD</span>
     <span id="tripShip">&#x1F6F3; Ship TBD</span>
     <span id="tripPort">&#x2693; Port TBD</span>
+  </div>
+  <div class="countdown-bar" id="countdownBar" style="display:none">
+    <span class="countdown-pill" id="countdownPill"></span>
   </div>
   <div class="status-bar" id="statusBar">
     <span class="status-pill empty" id="statusDisplay">No status set</span>
@@ -369,6 +387,10 @@
     <input id="mDayLabel" placeholder="e.g. Day 1 &#xB7; Saturday Jul 12" oninput="scheduleAutoSave()" />
     <label data-i18n="lPortLocation">Port / Location</label>
     <input id="mDayPort" placeholder="e.g. Miami (Embarkation) or At Sea" oninput="scheduleAutoSave()" />
+    <label>Arrival Time <span style="font-weight:400;color:#9ca3af">(optional)</span></label>
+    <input id="mDayArrive" placeholder="e.g. 7:00 AM" oninput="scheduleAutoSave()" />
+    <label>Departure Time <span style="font-weight:400;color:#9ca3af">(optional)</span></label>
+    <input id="mDayDepart" placeholder="e.g. 5:00 PM" enterkeyhint="done" oninput="scheduleAutoSave()" onkeydown="if(event.key==='Enter'){event.preventDefault();saveDay();}" />
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeModal('dayModal')" data-i18n="cancel">Cancel</button>
       <button class="btn-primary" id="daySaveBtn" onclick="saveDay()">Add Day</button>
@@ -733,6 +755,30 @@ function updateSortBtns() {
 // &#x2500;&#x2500; TRIP &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
 function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
+function getEmbarkDate() {
+  const d = state.trip.dates || '';
+  const m = d.match(/^([A-Za-z]+ \d+)[\s\S]*?(\d{4})/);
+  if (!m) return null;
+  const dt = new Date(m[1] + ', ' + m[2]);
+  return isNaN(dt) ? null : dt;
+}
+
+function renderCountdown() {
+  const bar  = document.getElementById('countdownBar');
+  const pill = document.getElementById('countdownPill');
+  if (!bar) return;
+  const emb = getEmbarkDate();
+  if (!emb) { bar.style.display = 'none'; return; }
+  const today  = new Date(); today.setHours(0,0,0,0);
+  const target = new Date(emb); target.setHours(0,0,0,0);
+  const diff   = Math.round((target - today) / 86400000);
+  if (diff < 0) { bar.style.display = 'none'; return; }
+  pill.textContent = diff === 0 ? '\uD83C\uDF89 TODAY IS EMBARKATION DAY!' :
+                     diff === 1 ? '\u23F3 1 DAY TO EMBARKATION!' :
+                                  '\u23F3 ' + diff + ' DAYS TO EMBARKATION';
+  bar.style.display = 'flex';
+}
+
 function renderTrip() {
   const tr = state.trip;
   document.getElementById('tripName').textContent    = tr.name    || 'Group Cruise 2025';
@@ -740,6 +786,7 @@ function renderTrip() {
   document.getElementById('tripDates').textContent = '\u{1F4C5} ' + (tr.dates || t('datesTBD'));
   document.getElementById('tripShip').textContent  = '\u{1F6F3} ' + (tr.ship  || t('shipTBD'));
   document.getElementById('tripPort').textContent  = '\u2693 ' + (tr.port  || t('portTBD'));
+  renderCountdown();
   const sd = document.getElementById('statusDisplay');
   if (tr.status) {
     sd.textContent = tr.status;
@@ -749,6 +796,7 @@ function renderTrip() {
     sd.classList.add('empty');
   }
 }
+setInterval(renderCountdown, 60000);
 
 function openStatusModal() {
   document.getElementById('mStatusText').value = state.trip.status || '';
@@ -954,7 +1002,10 @@ function renderItinerary() {
   el.innerHTML = state.days.map(d => `
     <div class="day-row">
       <div class="day-header" onclick="toggleDay('${d.id}', this)" id="dh_${d.id}">
-        <div class="day-label">${d.label}</div>
+        <div>
+          <div class="day-label">${d.label}</div>
+          ${(d.arrive||d.depart) ? `<div class="day-times">${d.arrive?'&#x1F6F3; Arrive: '+d.arrive:''}${d.arrive&&d.depart?' &nbsp;&#xB7;&nbsp; ':''}${d.depart?'&#x26F5; Depart: '+d.depart:''}</div>` : ''}
+        </div>
         <div style="display:flex;align-items:center;gap:.5rem">
           <div class="day-port">${d.port}</div>
           <span class="chevron">&#x25BE;</span>
@@ -993,13 +1044,14 @@ function openDayModal(id) {
   if (id) {
     const d = state.days.find(x => x.id === id);
     if (!d) return;
-    document.getElementById('mDayLabel').value = d.label || '';
-    document.getElementById('mDayPort').value  = d.port  || '';
+    document.getElementById('mDayLabel').value  = d.label  || '';
+    document.getElementById('mDayPort').value   = d.port   || '';
+    document.getElementById('mDayArrive').value = d.arrive || '';
+    document.getElementById('mDayDepart').value = d.depart || '';
     titleEl.innerHTML = t('dayEditTitle');
     saveBtn.innerHTML = t('editDayBtn');
   } else {
-    document.getElementById('mDayLabel').value = '';
-    document.getElementById('mDayPort').value  = '';
+    ['mDayLabel','mDayPort','mDayArrive','mDayDepart'].forEach(i => document.getElementById(i).value = '');
     titleEl.innerHTML = t('dayTitle');
     saveBtn.innerHTML = t('addDayBtn');
   }
@@ -1007,14 +1059,16 @@ function openDayModal(id) {
 }
 
 function saveDay(keepOpen) {
-  const label = document.getElementById('mDayLabel').value.trim() || 'Day';
-  const port  = document.getElementById('mDayPort').value.trim();
+  const label  = document.getElementById('mDayLabel').value.trim()  || 'Day';
+  const port   = document.getElementById('mDayPort').value.trim();
+  const arrive = document.getElementById('mDayArrive').value.trim();
+  const depart = document.getElementById('mDayDepart').value.trim();
   if (editingDay) {
     const i = state.days.findIndex(x => x.id === editingDay);
-    if (i > -1) { state.days[i].label = label; state.days[i].port = port; }
+    if (i > -1) Object.assign(state.days[i], { label, port, arrive, depart });
     if (!keepOpen) editingDay = null;
   } else {
-    state.days.push({ id: uid(), label, port, events: [] });
+    state.days.push({ id: uid(), label, port, arrive, depart, events: [] });
   }
   save(); renderItinerary();
   if (!keepOpen) closeModal('dayModal');
@@ -1150,6 +1204,22 @@ function deleteNote(id) {
 }
 
 // &#x2500;&#x2500; CONTACTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
+function parseContactInfo(info) {
+  if (!info) return '';
+  return info.split(/\s*[-\u2013]\s*/).map(p => {
+    p = p.trim();
+    if (!p) return '';
+    if (p.includes('@')) return `<a href="mailto:${p}" onclick="event.stopPropagation()">\uD83D\uDCE7 ${p}</a>`;
+    if (/[\d()\-+\s]{6,}/.test(p)) return `<a href="tel:${p.replace(/\D/g,'')}" onclick="event.stopPropagation()">\uD83D\uDCDE ${p}</a>`;
+    return `<span>${p}</span>`;
+  }).filter(Boolean).join('');
+}
+
+function toggleContactCard(card, event) {
+  if (event.target.closest('.edit-btn,.del-btn')) return;
+  card.classList.toggle('expanded');
+}
+
 function renderContacts() {
   const el = document.getElementById('contactsGrid');
   if (!state.contacts.length) {
@@ -1157,14 +1227,14 @@ function renderContacts() {
     return;
   }
   el.innerHTML = state.contacts.map(c => `
-    <div class="contact-card">
+    <div class="contact-card" onclick="toggleContactCard(this, event)">
       <div class="item-actions">
         <button class="edit-btn" onclick="openContactModal('${c.id}')" title="Edit">&#x270F; Edit</button>
         <button class="del-btn" onclick="deleteContact('${c.id}')">&#x2715;</button>
       </div>
-      <div class="contact-name" style="padding-right:3rem">${c.name}</div>
-      <div class="contact-role">${c.role}</div>
-      <div class="contact-info">${c.info}</div>
+      <div class="contact-name" style="padding-right:3rem">${c.name} <span class="contact-chevron">&#x25BE;</span></div>
+      <div class="contact-role">${c.role || ''}</div>
+      <div class="contact-details">${parseContactInfo(c.info)}</div>
     </div>`).join('');
 }
 
