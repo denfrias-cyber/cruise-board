@@ -37,7 +37,7 @@
     /* &#x2500;&#x2500; HERO &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500; */
     .hero { text-align: center; padding: 2.5rem 1rem 2rem; color: var(--white); }
     .hero-brand { display: flex; align-items: center; justify-content: center; gap: 1.2rem; margin-bottom: .5rem; }
-    .rc-logo { height: 2.6rem; filter: brightness(0) invert(1); opacity: .88; object-fit: contain; }
+    .rc-logo { height: 2.8rem; filter: invert(1) saturate(0) brightness(3); mix-blend-mode: screen; object-fit: contain; }
     .hero .wave { font-size: 3rem; display: block; }
     .hero h1 { font-size: 1.9rem; font-weight: 800; letter-spacing: -.5px; }
     .hero .subtitle { font-size: 1rem; opacity: .85; margin-top: .4rem; }
@@ -47,9 +47,6 @@
     .status-bar { display: flex; align-items: center; justify-content: center; gap: .5rem; margin-top: .85rem; min-height: 2rem; }
     .status-pill { background: rgba(255,255,255,.22); backdrop-filter: blur(6px); border: 1.5px solid rgba(255,255,255,.55); color: #fff; border-radius: 999px; padding: .45rem 1.3rem; font-size: 1rem; font-weight: 700; letter-spacing: .01em; }
     .status-pill.empty { opacity: .45; font-style: italic; font-weight: 400; font-size: .88rem; }
-    .countdown-bar { margin-top: .7rem; display: flex; justify-content: center; }
-    .countdown-pill { background: linear-gradient(90deg,#f77f50,#fbbf24); color: #fff; border-radius: 999px; padding: .4rem 1.2rem; font-size: .9rem; font-weight: 800; letter-spacing: .02em; box-shadow: 0 2px 12px rgba(247,127,80,.4); animation: pulse-glow 2s ease-in-out infinite; }
-    @keyframes pulse-glow { 0%,100%{box-shadow:0 2px 12px rgba(247,127,80,.4)} 50%{box-shadow:0 4px 24px rgba(247,127,80,.7)} }
     .status-edit-btn { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.45); color: #fff; border-radius: 999px; padding: .3rem .8rem; font-size: .8rem; cursor: pointer; transition: background .15s; }
     .status-edit-btn:hover { background: rgba(255,255,255,.35); }
     .status-presets { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: .85rem; }
@@ -182,7 +179,7 @@
 <!-- HERO -->
 <div class="hero">
   <div class="hero-brand">
-    <img class="rc-logo" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Royal_Caribbean_International_logo.svg/280px-Royal_Caribbean_International_logo.svg.png" alt="Royal Caribbean" />
+    <img class="rc-logo" src="./royal.jpg" alt="Royal Caribbean" />
     <span class="wave" id="waveIcon" onclick="handleWaveTap()">&#x1F6A2;</span>
   </div>
   <h1 id="tripName">Group Cruise 2025</h1>
@@ -191,9 +188,6 @@
     <span id="tripDates">&#x1F4C5; Dates TBD</span>
     <span id="tripShip">&#x1F6F3; Ship TBD</span>
     <span id="tripPort">&#x2693; Port TBD</span>
-  </div>
-  <div class="countdown-bar" id="countdownBar" style="display:none">
-    <span class="countdown-pill" id="countdownPill"></span>
   </div>
   <div class="status-bar" id="statusBar">
     <span class="status-pill empty" id="statusDisplay">No status set</span>
@@ -764,19 +758,18 @@ function getEmbarkDate() {
 }
 
 function renderCountdown() {
-  const bar  = document.getElementById('countdownBar');
-  const pill = document.getElementById('countdownPill');
-  if (!bar) return;
+  const datesEl = document.getElementById('tripDates');
+  if (!datesEl) return;
   const emb = getEmbarkDate();
-  if (!emb) { bar.style.display = 'none'; return; }
+  const tr  = state.trip;
+  const base = '\u{1F4C5} ' + (tr.dates || t('datesTBD'));
+  if (!emb) { datesEl.textContent = base; return; }
   const today  = new Date(); today.setHours(0,0,0,0);
   const target = new Date(emb); target.setHours(0,0,0,0);
   const diff   = Math.round((target - today) / 86400000);
-  if (diff < 0) { bar.style.display = 'none'; return; }
-  pill.textContent = diff === 0 ? '\uD83C\uDF89 TODAY IS EMBARKATION DAY!' :
-                     diff === 1 ? '\u23F3 1 DAY TO EMBARKATION!' :
-                                  '\u23F3 ' + diff + ' DAYS TO EMBARKATION';
-  bar.style.display = 'flex';
+  if (diff < 0)  { datesEl.textContent = base; return; }
+  if (diff === 0) { datesEl.textContent = base + ' \u2022 \uD83C\uDF89 Today!'; return; }
+  datesEl.textContent = base + ' \u2022 \u23F3 ' + diff + 'd';
 }
 
 function renderTrip() {
@@ -1206,11 +1199,12 @@ function deleteNote(id) {
 // &#x2500;&#x2500; CONTACTS &#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;&#x2500;
 function parseContactInfo(info) {
   if (!info) return '';
-  return info.split(/\s*[-\u2013]\s*/).map(p => {
+  // Split ONLY on spaced dashes ( - ) or commas/semicolons — never on bare dashes inside phone numbers
+  return info.split(/\s+-\s+|\s*[,;]\s*/).map(p => {
     p = p.trim();
     if (!p) return '';
     if (p.includes('@')) return `<a href="mailto:${p}" onclick="event.stopPropagation()">\uD83D\uDCE7 ${p}</a>`;
-    if (/[\d()\-+\s]{6,}/.test(p)) return `<a href="tel:${p.replace(/\D/g,'')}" onclick="event.stopPropagation()">\uD83D\uDCDE ${p}</a>`;
+    if (/[\d().\s+]{7,}/.test(p)) return `<a href="tel:${p.replace(/\D/g,'')}" onclick="event.stopPropagation()">\uD83D\uDCDE ${p}</a>`;
     return `<span>${p}</span>`;
   }).filter(Boolean).join('');
 }
