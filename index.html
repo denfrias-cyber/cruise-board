@@ -778,9 +778,9 @@ function renderTrip() {
   const tr = state.trip;
   document.getElementById('tripName').textContent    = tr.name    || 'Group Cruise 2025';
   document.getElementById('tripTagline').textContent = tr.tagline || '';
-  document.getElementById('tripDates').textContent = '\u{1F4C5} ' + (tr.dates || t('datesTBD'));
-  document.getElementById('tripShip').textContent  = '\u{1F6F3} ' + (tr.ship  || t('shipTBD'));
-  document.getElementById('tripPort').textContent  = '\u2693 ' + (tr.port  || t('portTBD'));
+  const elDates = document.getElementById('tripDates'); if (elDates) elDates.textContent = '\u{1F4C5} ' + (tr.dates || t('datesTBD'));
+  const elShip  = document.getElementById('tripShip');  if (elShip)  elShip.textContent  = '\u{1F6F3} ' + (tr.ship  || t('shipTBD'));
+  const elPort  = document.getElementById('tripPort');  if (elPort)  elPort.textContent  = '\u2693 ' + (tr.port  || t('portTBD'));
   renderCountdown();
   const sd  = document.getElementById('statusDisplay');
   const bar = document.getElementById('statusBar');
