@@ -773,9 +773,9 @@ function renderCountdown() {
   const target = new Date(emb); target.setHours(0,0,0,0);
   const diff   = Math.round((target - today) / 86400000);
   if (diff < 0)  { bar.style.display = 'none'; return; }
-  if (diff === 0) { pill.textContent = '\uD83C\uDF89 TODAY IS EMBARKATION DAY!'; }
-  else if (diff === 1) { pill.textContent = '\u23F3 1 DAY TO EMBARKATION!'; }
-  else { pill.textContent = '\u23F3 ' + diff + ' DAYS TO EMBARKATION'; }
+  if (diff === 0) { pill.textContent = '\uD83C\uDF89 Embarkation Day!'; }
+  else if (diff === 1) { pill.textContent = '\u23F3 1 Day'; }
+  else { pill.textContent = '\u23F3 ' + diff + ' Days'; }
   bar.style.display = 'flex';
 }
 
