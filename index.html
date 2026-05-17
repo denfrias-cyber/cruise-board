@@ -190,8 +190,8 @@
   <div class="countdown-bar" id="countdownBar" style="display:none">
     <span class="countdown-pill" id="countdownPill"></span>
   </div>
-  <div class="status-bar" id="statusBar">
-    <span class="status-pill empty" id="statusDisplay">No status set</span>
+  <div class="status-bar" id="statusBar" style="display:none">
+    <span class="status-pill" id="statusDisplay"></span>
     <button class="status-edit-btn" id="statusEditBtn" onclick="openStatusModal()" style="display:none">&#x270F;&#xFE0F; Status</button>
   </div>
   <div class="hero-btns" id="adminBtns" style="display:none">
@@ -782,13 +782,15 @@ function renderTrip() {
   document.getElementById('tripShip').textContent  = '\u{1F6F3} ' + (tr.ship  || t('shipTBD'));
   document.getElementById('tripPort').textContent  = '\u2693 ' + (tr.port  || t('portTBD'));
   renderCountdown();
-  const sd = document.getElementById('statusDisplay');
+  const sd  = document.getElementById('statusDisplay');
+  const bar = document.getElementById('statusBar');
   if (tr.status) {
     sd.textContent = tr.status;
     sd.classList.remove('empty');
+    bar.style.display = '';
   } else {
-    sd.textContent = 'No status set';
-    sd.classList.add('empty');
+    sd.textContent = '';
+    bar.style.display = document.getElementById('statusEditBtn')?.style.display !== 'none' ? '' : 'none';
   }
 }
 setInterval(renderCountdown, 60000);
